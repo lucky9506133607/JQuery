@@ -1,0 +1,3245 @@
+﻿attribute equals selector [name="value"]
+attribute not equal selector [name!="value"]
+attribute contains selector [name*="value"]
+attribute contains word selector [name~="value"]
+attribute contains prefix selector [name|="value"]
+attribute start with selector [name^="value"]
+attribute ends with selector [name$="value"]
+
+example:-  $('[title="div1title"]').css('border','5px solid red')
+
+
+
+jQuery input vs :input
+$(':input') selects all input, textarea, select and button elements where as $('input') just selects elements with an input tag.
+
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+</head>
+<body style="font-family:Arial">
+    First Name : <input type="text" value="John" />
+    <br /><br />
+    Last Name : <input type="text" value="Major" />
+    <br /><br />
+    Gender :
+    <input type="radio" name="gender" checked="checked" value="Male">Male
+    <input type="radio" name="gender" value="Female">Female
+    <br /><br />
+    Skills :
+    <input type="checkbox" name="skills" checked="checked"
+           value="JavaScript" />JavaScript
+    <input type="checkbox" name="skills" checked="checked"
+           value="jQuery" />jQuery
+    <input type="checkbox" name="skills" value="C#" />C#
+    <br /><br />
+    Country:
+    <select>
+        <option selected="selected" value="USA">USA</option>
+        <option value="India">India</option>
+        <option value="UK">UK</option>
+    </select>
+    <br /><br />
+    Summary :
+    <br />
+    <textarea>
+        I am a Senior Dot Net Developer with 10 years experience
+    </textarea>
+    <br /><br />
+    <input type="submit" value="submit" />
+</body>
+</html>
+
+Now we want to get the text value from all the textboxes. On this page we have 2 textboxes
+1. First Name
+2. Last Name
+
+jQuery code to get textbox value using $(input)
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[type="text"]').each(function () {
+            alert($(this).val());
+        });
+    });
+</script>
+
+jQuery code to get textbox value using $(:input)
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(':input[type="text"]').each(function () {
+            alert($(this).val());
+        });
+    });
+</script>
+
+Which one is better for performance $('input[type="text"]') or $(':input[type="text"]')
+$('input[type="text"]') is better for performance over $(':input[type="text"]'). 
+
+This is because $(':input[type="text"]') needs to scan all input elements, textarea, select etc, where as $('input[type="text"]') scans only input elements.
+
+So if you want to find elements with an input tag, it is always better to use $('input[type="text"]') over $(':input[type="text"]')
+----------------------------------------------------------------------------------------------------------
+
+jQuery checked selector
+The :checked selector selects all checked check-boxes or radio buttons. Let us understand this with an example.
+
+Selects all checked radio button elements
+$('input[type="radio"]:checked')
+
+
+Example : When you click the submit button without selecting any radio button, "No radio button checked" message should be displayed.
+When you click the submit button after a radio button is checked, then a message stating "Male is checked" or "Female is checked" should be displayed.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSubmit').click(function () {
+                var result = $('input[type="radio"]:checked');
+                if (result.length > 0) {
+                    $('#divResult').html(result.val() + " is checked");
+                }
+                else {
+                    $('#divResult').html("No radio button checked");
+                }
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    Gender :
+    <input type="radio" name="gender" value="Male">Male
+    <input type="radio" name="gender" value="Female">Female
+    <br /><br />
+    <input id="btnSubmit" type="submit" value="submit" />
+    <br /><br />
+    <div id="divResult">
+    </div>
+</body>
+</html>
+
+Selects all checked checkbox elements
+$('input[type="checkbox"]:checked')
+
+Example : When you click the submit button without checking any checkbox, "No checkbox checked" message should be displayed.
+
+When you click the submit button after checking a checkbox, then a message stating the number of checkboxes checked and their values should be displayed.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSubmit').click(function () {
+                var result = $('input[type="checkbox"]:checked');
+                if (result.length > 0) {
+                    var resultString = result.length + " checkboxe(s) checked<br/>";
+                    result.each(function () {
+                        resultString += $(this).val() + "<br/>";
+                    });
+                    $('#divResult').html(resultString);
+                }
+                else {
+                    $('#divResult').html("No checkbox checked");
+                }
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    Skills :
+    <input type="checkbox" name="skills" value="JavaScript" />JavaScript
+    <input type="checkbox" name="skills" value="jQuery" />jQuery
+    <input type="checkbox" name="skills" value="C#" />C#
+    <input type="checkbox" name="skills" value="VB" />VB
+    <br /><br />
+    <input id="Submit1" type="submit" value="submit" />
+    <br /><br />
+    <div id="div1">
+    </div>
+</body>
+</html>
+
+-----------------------------------------------------------------------------------------------------
+
+Select values of checkbox group with jquery
+In this video we will discuss, how to select values of checked checkboxes that are in different groups using jQuery. Along the way, we will also discuss how to pass a variable to jquery selector.
+This is continuation to Part 11, please watch Part 11 from jQuery tutorial before proceeding.
+
+If you have just one group of checkboxes on your page, to get all the checked checkboxes you can use $('input[type="checkbox"]:checked').
+However, if you have more than one checkbox group, then $('input[type="checkbox"] :checked') is going to select all checked checkboxes from both the checkbox groups.
+
+If you prefer to get checked checkboxes from a specific checkbox group, depending on which button you have clicked, you can use $('input[name="skills"]:checked') or  $('input[name="cities"]:checked'). This will ensure that the checked checkboxes from only the skills or cities checkbox group are selected.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnGetSelectedSkills').click(function () {
+                getSelectedCheckBoxes('skills');
+            });
+
+            $('#btnGetSelectedCities').click(function () {
+                getSelectedCheckBoxes('cities');
+            });
+
+            var getSelectedCheckBoxes = function (groupName) {
+                var result = $('input[name="' + groupName + '"]:checked');
+                if (result.length > 0) {
+                    var resultString = result.length + " checkboxe(s) checked<br/>";
+                    result.each(function () {
+                        resultString += $(this).val() + "<br/>";
+                    });
+                    $('#divResult').html(resultString);
+                }
+                else {
+                    $('#divResult').html("No checkbox checked");
+                }
+            };
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    Skills :
+    <input type="checkbox" name="skills" value="JavaScript" />JavaScript
+    <input type="checkbox" name="skills" value="jQuery" />jQuery
+
+ 
+    <input type="checkbox" name="skills" value="C#" />C#
+
+ 
+    <input type="checkbox" name="skills" value="VB" />VB
+    <br /><br />
+    Preferred Cities :
+    <input type="checkbox" name="cities" value="New York" />New York
+    <input type="checkbox" name="cities" value="New Delhi" />New Delhi
+    <input type="checkbox" name="cities" value="London" />London
+    <br /><br />
+    <input id="btnGetSelectedSkills" type="submit" value="Get Selected Skills" />
+    <input id="btnGetSelectedCities" type="submit" value="Get Selected Cities" />
+    <br /><br />
+    <div id="div2">
+    </div>
+</body>
+</html>
+
+At the moment to get the checked checkboxes values, we are using a button click event. You can also use the click event of the checkbox to do this.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[name="skills"]').click(function () {
+                getSelectedCheckBoxes('skills');
+            });
+
+            $('input[name="cities"]').click(function () {
+                getSelectedCheckBoxes('cities');
+            });
+
+            var getSelectedCheckBoxes = function (groupName) {
+                var result = $('input[name="' + groupName + '"]:checked');
+                if (result.length > 0) {
+                    var resultString = result.length + " checkboxe(s) checked<br/>";
+                    result.each(function () {
+                        resultString += $(this).val() + "<br/>";
+                    });
+                    $('#div' + groupName).html(resultString);
+                }
+                else {
+                    $('#div' + groupName).html("No checkbox checked");
+                }
+            };
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    Skills :
+    <input type="checkbox" name="skills" value="JavaScript" />JavaScript
+    <input type="checkbox" name="skills" value="jQuery" />jQuery
+    <input type="checkbox" name="skills" value="C#" />C#
+    <input type="checkbox" name="skills" value="VB" />VB
+    <br /><br />
+    Preferred Cities :
+    <input type="checkbox" name="cities" value="New York" />New York
+    <input type="checkbox" name="cities" value="New Delhi" />New Delhi
+    <input type="checkbox" name="cities" value="London" />London
+    <br /><br />
+    Selected Skills:<br />
+    <div id="divskills"></div>
+    <br />
+    Selected Cities:<br />
+    <div id="divcities"></div>
+</body>
+</html>
+
+--------------------------------------------------------------------------------------------------
+
+jQuery get selected checkbox text
+In this video we will discuss how to get the checked checkbox text along with the value. This is continuation to Part 12, please watch Part 12 from jQuery tutorial before proceeding.
+
+Here is what we want to do. As we check the checkboxes, we want to display the count of checkboxes checked and their text and values.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[name="skills"]').click(function () {
+                getSelectedCheckBoxes('skills');
+            });
+
+            $('input[name="cities"]').click(function () {
+                getSelectedCheckBoxes('cities');
+            });
+
+            var getSelectedCheckBoxes = function (groupName) {
+                var result = $('input[name="' + groupName + '"]:checked');
+                if (result.length > 0) {
+                    var resultString = result.length + " checkbox checked<br/>";
+                    result.each(function () {
+                        var selectedValue = $(this).val();
+                        resultString += selectedValue + " - "
+                            + $('label[for="option-' + selectedValue + '"]').text() + "<br/>";
+                    });
+                    $('#div' + groupName).html(resultString);
+                }
+                else {
+                    $('#div' + groupName).html("No checkbox checked");
+                }
+            };
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    Skills :
+    <input type="checkbox" name="skills" value="js" />
+    <label for="option-js">JavaScript</label>
+    <input type="checkbox" name="skills" value="jq" />
+    <label for="option-jq">jQuery</label>
+    <input type="checkbox" name="skills" value="cs" />
+    <label for="option-cs">C#</label>
+    <input type="checkbox" name="skills" value="vb" />
+    <label for="option-vb">VB</label>
+    <br /><br />
+    Preferred Cities :
+    <input type="checkbox" name="cities" value="ny" />
+    <label for="option-ny">New York</label>
+    <input type="checkbox" name="cities" value="nd" />
+    <label for="option-nd">New Delhi</label>
+    <input type="checkbox" name="cities" value="ln" />
+    <label for="option-ln">London</label>
+    <br /><br />
+    Selected Skills:<br />
+    <div id="div3"></div>
+    <br />
+    Selected Cities:<br />
+    <div id="div4"></div>
+</body>
+</html>
+
+--------------------------------------------------------------------------------------------------------
+
+jQuery selected selector
+To select all checked checkboxes or radio buttons, we use :checked selector. To select all selected options of a select element use :selected selector. 
+
+How to get selected option from single select dropdown in jquery : We want to get the selected option text and value
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#selectCountries').change(function () {
+                var selectedOption = $('#selectCountries option:selected');
+                $('#divResult').html('Value = ' + selectedOption.val()
+                    + ', Text = ' + selectedOption.text());
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    Country:
+    <select id="selectCountries">
+        <option selected="selected" value="USA">United States</option>
+        <option value="IND">India</option>
+        <option value="UK">United Kingdom</option>
+        <option value="CA">Canada</option>
+        <option value="AU">Australia</option>
+    </select>
+    <br /><br />
+    <div id="div5"></div>
+</body>
+</html>
+
+How to get all selected options from multi-select dropdown in jquery : We want to get all the selected options text and value.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#selectCountries').change(function () {
+                var selectedOptions = $('#selectCountries option:selected');
+                if (selectedOptions.length > 0) {
+                    var resultString = '';
+                    selectedOptions.each(function () {
+                        resultString += 'Value = ' + $(this).val() +
+                            ', Text = ' + $(this).text() + '<br/>';
+                    });
+                    $('#divResult').html(resultString);
+                }
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <select id="select1" multiple="multiple">
+        <option selected="selected" value="USA">United States</option>
+        <option value="IND">India</option>
+        <option value="UK">United Kingdom</option>
+        <option value="CA">Canada</option>
+        <option value="AU">Australia</option>
+    </select>
+    <br /><br />
+    <div id="div6"></div>
+</body>
+</html>
+
+Please note : Hold down the CTRL key, to select more than one item.
+
+-------------------------------------------------------------------------------------------------
+
+jQuery disabled selector
+
+In this video we will discuss
+1. jQuery disabled selector
+2. jQuery enabled selector
+3. Where you can find jquery selectors documentation
+
+Selects all disabled elements
+$(':disabled')
+
+Selects all disabled elements and sets a 3px solid red border
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(':disabled').css('border', '3px solid red');
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <table>
+        <tr>
+            <td>First Name </td>
+            <td><input type="text" disabled="disabled" /></td>
+        </tr>
+        <tr>
+            <td>Last Name </td>
+            <td><input type="text" disabled="disabled" /></td>
+        </tr>
+        <tr>
+            <td>Email </td>
+            <td><input type="text" /></td>
+        </tr>
+        <tr>
+            <td>Gender </td>
+            <td>
+                <select id="selectGender" disabled="disabled">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Comments</td>
+            <td><textarea></textarea></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Submit" disabled="disabled" />
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+
+Selects all input elements that are disabled and sets a 3px solid red border
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input:disabled').css('border', '3px solid red');
+    });
+</script>
+
+Selects all input elements with type=text that are disabled and sets a 3px solid red border
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[type="text"]:disabled').css('border', '3px solid red');
+    });
+</script>
+
+Selects all enabled elements
+$(':enabled')
+
+Selects all enabled textarea elements and sets a 3px solid red border
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('textarea:enabled').css('border', '3px solid red');
+    });
+</script>
+
+Where can you find jquery selectors documentation
+https://api.jquery.com/category/selectors/
+
+--------------------------------------------------------------------------------------------------------
+
+jQuery each function
+In this video we will discuss 
+1. Use of jQuery each function
+2. How to exit from each function in jQuery
+3. Implicit iteration in jQuery
+4. Performance considerations when using jquery each function
+
+jQuery each function is used to iterate over the items in a collection. For each item in the collection the anonymous function is called. The index of the element and the element itself are passed to the anonymous function. 
+
+$('li').each(function (index, element) {
+    alert(index + ' : ' + $(element).text());
+});
+
+To refer to the current element that we are iterating over you can also use this keyword.
+$('li').each(function (index) {
+    alert(index + ' : ' + $(this).text());
+});
+
+If you don't care about the index and just need the text of the list item, then you can get rid of the index parameter
+$('li').each(function () {
+    alert($(this).text());
+});
+
+How to exit from each function in jQuery : To exit from each function, return false.
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('li').each(function () {
+            if ($(this).text() == 'UK') {
+                return false;
+            }
+            alert($(this).text());
+        });
+    });
+</script>
+
+Implicit iteration in jQuery : The $('li') selector returns all list item elements. Notice that we are calling the css() jquery function on the jquery collection itself. In this case, css() method implicitly iterates over each element in the entire collection. 
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('li').css('color', 'red');
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <ul>
+        <li>US</li>
+        <li>India</li>
+        <li>UK</li>
+        <li>Canada</li>
+        <li>Australia</li>
+    </ul>
+</body>
+</html>
+
+There is no need to explicitly iterate over each element in the collection. Most jQuery methods implicitly iterate over the entire collection.
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('li').each(function () {
+            $(this).css('color', 'red');
+        });
+    });
+</script>
+
+Performance considerations when using jquery each function
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('li').each(function () {
+                $('#divResult').html($('#divResult').html() + '<br/>' + $(this).text())
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <ul>
+        <li>US</li>
+        <li>India</li>
+        <li>UK</li>
+        <li>Canada</li>
+        <li>Australia</li>
+    </ul>
+    <div id="div7"></div>
+</body>
+</html>
+
+From a performance standpoint, there are 2 problems with the above code
+1. jQuery needs to search the DOM for div element with id = divResult, for each list item in the collection. Since there are 5 list items, jquery searches the DOM 5 times for the same div element with id = divResult. The performance of the above code can be improved by caching the divResult element.
+
+2. The DOM element (div element with id = divResult) is being updated on each iteration. Again this is bad for performance. To improve the performance build a string variable with the required data on each iteration of the loop. Once the loop has completed, update the DOM element with the value that is present in the string varibale. This will ensure that the DOM element is updated only once and this is much better for performance.
+
+The following is much better from a performance standpoint
+<script type="text/javascript">
+    $(document).ready(function () {
+        var result = '';
+        $('li').each(function () {
+            result += '<br/>' + $(this).text();
+        });
+        $('#divResult').html(result);
+    });
+</script>
+
+--------------------------------------------------------------------------------------------------------------
+
+jQuery method chaining
+
+In this video we will discuss 
+1. What is method chaining
+2. How method chaining works
+3. When will method chaining not work
+
+Let us understand this with an example. Consider the following HTML
+<ul>
+    <li>US</li>
+    <li>India</li>
+    <li>UK</li>
+    <li>Canada</li>
+    <li>Australia</li>
+</ul>
+
+The jQuery code should do the following
+1. Change the color of all the list items to blue
+2. All the list items should slide down (animation)
+3. All the list items should slide up (animation)
+4. Change the title attribute of all the list items to MY TITLE
+
+One way to do this is by using the following jQuery code
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('li').css('color', 'blue');
+            $('li').slideUp(1000);
+            $('li').slideDown(1000);
+            $('li').attr('title', 'MY TITLE');
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <ul>
+        <li>US</li>
+        <li>India</li>
+        <li>UK</li>
+        <li>Canada</li>
+        <li>Australia</li>
+    </ul>
+</body>
+</html>
+
+Instead the jQuery methods can be chained as shown below
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('li').css('color', 'blue').slideUp(1000).slideDown(1000).attr('title', 'MY TITLE');
+    });
+</script>
+
+How does method chaining work
+1. $('li') returns a jquery collection object that contains all the elements that match the selector
+2. On the collection object css() method is called. This method applies the color to all the elements in the collection and returns the collection again.
+3. On the collection that is returned by the css() method, the slideUp() method is called.
+4. This process continues until we reach the last method in the chain.
+
+When chaining methods like this, the line of code will become quite long and the readability will be lost. To improve the readability of the code you can format chained methods as shown below.
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('li')
+            .css('color', 'blue')
+            .slideUp(1000)
+            .slideDown(1000)
+            .attr('title', 'MY TITLE');
+    });
+</script>
+
+When will method chaining not work
+Method chaining will not work if a method in the chain does not return an object. In the example below, text() method returns a string that contains the text of all the list items and not an object. Hence the chaining does not work in this case.
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('li')
+            .text()
+            .css('color', 'blue')
+            .slideUp(1000)
+            .slideDown(1000)
+            .attr('title', 'MY TITLE');
+    });
+</script>
+
+With the same example, method chaining works, if you use text() method to set the value for the list item. In this case, text() method sets a value for each list item in the jQuery collection object and returns that collection object. Hence the chaining works.
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('li')
+            .text('MY VALUE')
+            .css('color', 'blue')
+            .slideUp(1000)
+            .slideDown(1000)
+            .attr('title', 'MY TITLE');
+    });
+</script>
+
+--------------------------------------------------------------------------------------------------------------
+
+What is JSON
+In this video we will discuss
+1. What is JSON
+2. JSON Arrays
+3. Nested JSON object
+What is JSON
+JSON stands for JavaScript Object Notation. JSON is a lightweight data-interchange format. JSON is an easier-to-use alternative to XML.
+
+Creating a JSON object : Employee data can be stored in a JSON object as shown below.
+
+var employeeJSON = {
+    "firstName": "Todd",
+    "lastName": "Grover",
+    "gender": "Male",
+    "salary": 50000
+};
+
+1. employeeJSON is a JSON object
+2. In the curly braces we include the "name": "value" pairs, separated by commas
+3. The name and value of a property are separated using a colon (:)
+4. You can declare any number of properties
+
+If you want to represent the same data using XML, you may have XML that would look as shown below.
+<Employee>
+  <firstName>Todd</firstName>
+  <lastName>Grover</lastName>
+  <gender>Male</gender>
+  <salary>50000</salary>
+</Employee>
+
+Reading data from the JSON object : To read data from the JSON object, use the property names.
+var firstName = employeeJSON.firstName;
+
+Creating and accessing data from a JSON object
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            // Creating a JSON object
+            var employeeJSON = {
+                "firstName": "Todd",
+                "lastName": "Grover",
+                "gender": "Male",
+                "salary": 50000
+            };
+
+            // Accessing data from a JSON object
+            var result = '';
+            result += 'First Name = ' + employeeJSON.firstName + '<br/>';
+            result += 'Last Name = ' + employeeJSON.lastName + '<br/>';
+            result += 'Gender = ' + employeeJSON.gender + '<br/>';
+            result += 'Salary = ' + employeeJSON.salary + '<br/>';
+
+            $('#resultDiv').html(result);
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div id="resultDiv"></div>
+</body>
+</html>
+
+Output : 
+
+
+JSON Arrays : What if you want to store more than one employee data in the JSON object. This is when JSON arrays can be used. A JSON array can contain multiple objects.
+
+To create a JSON array 
+1. Wrap the objects in square brackets
+2. Each object must be separated with a comma
+
+Creating a JSON array 
+var employeesJSON = [
+{
+    "firstName": "Todd",
+    "lastName": "Grover",
+    "gender": "Male",
+    "salary": 50000
+},
+{
+    "firstName": "Sara",
+    "lastName": "Baker",
+    "gender": "Female",
+    "salary": 40000
+}];
+
+Reading from a JSON array : To access the employee objects in the JSON array, use the object's index position.
+
+Retrieves the lastName of first employee object in the JSON array
+var result = employeesJSON[0].lastName;
+
+Retrieves the fistName of second employee object in the JSON array
+var result = employeesJSON[1].firstName;
+
+Nested JSON object : You can also store multiple employees in the JSON object by nesting them.
+
+Nested JSON object example : 
+
+var employeesJSON = {
+    "Todd": {
+        "firstName": "Todd",
+        "lastName": "Grover",
+        "gender": "Male",
+        "salary": 50000
+    },
+    "Sara": {
+        "firstName": "Sara",
+        "lastName": "Baker",
+        "gender": "Female",
+        "salary": 40000
+    }
+};
+
+Retrieves the gender of employee Todd
+var result = employeesJSON.Todd.gender;
+
+Retrieves the salary of employee Sara
+var result = employeesJSON.Sara.salary;
+
+In our upcoming videos we will discuss where we could use JSON formatted data.
+
+------------------------------------------------------------------------------------------
+
+
+Convert JSON object to string
+In this video we will discuss
+1. How to convert JSON object to string
+2. How to convert string to JSON object
+
+This is continuation Part 18. Please watch Part 18 from jQuery tutorial before proceeding.
+
+The following example converts JSON array to a string. JSON.stringify() method converts a JSON object (or array) into a JSON string.
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var employeesJSON = [
+                {
+                    "firstName": "Todd",
+                    "lastName": "Grover",
+                    "gender": "Male",
+                    "salary": 50000
+                },
+                {
+                    "firstName": "Sara",
+                    "lastName": "Baker",
+                    "gender": "Female",
+                    "salary": 40000
+                }
+            ];
+
+            var JSONString = JSON.stringify(employeesJSON);
+            $('#resultDiv').html(JSONString);
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div id="Div8"></div>
+</body>
+</html>
+
+Output : 
+[{"firstName":"Todd","lastName":"Grover","gender":"Male","salary":50000},
+{"firstName":"Sara","lastName":"Baker","gender":"Female","salary":40000}]
+
+The following example converts a JSON string to a JSON array. JSON.parse() method converts a JSON string to JSON array. We then use the jQuery each() method to loop thru each employee JSON object and retrieve the respective property values.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var JSONString = '[{ "firstName": "Todd", "lastName": "Grover", "gender": "Male", "salary": 50000 }, { "firstName": "Sara", "lastName": "Baker", "gender": "Female", "salary": 40000 }]';
+
+            var employeesJSON = JSON.parse(JSONString);
+
+            var result = '';
+
+            $.each(employeesJSON, function (i, item) {
+                result += 'First Name = ' + item.firstName + '<br/>';
+                result += 'Last Name = ' + item.lastName + '<br/>';
+                result += 'Gender = ' + item.gender + '<br/>';
+                result += 'Salary = ' + item.salary + '<br/><br/>';
+            });
+
+            $('#resultDiv').html(result);
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div id="Div9"></div>
+</body>
+</html>
+
+Output : 
+
+
+----------------------------------------------------------------------------------------------
+
+Convert JSON string to .net object
+
+In this video we will discuss
+1. How to convert .NET object to JSON string
+2. How to convert a JSON string to .NET object
+
+We will be using the following Employee class
+public class Employee
+{
+    public string firstName { get; set; }
+    public string lastName { get; set; }
+    public string gender { get; set; }
+    public int salary { get; set; }
+}
+
+The following example converts List<Employee> objects to a JSON string. Serialize() method of JavaScriptSerializer class converts a .NET object to a JSON string. JavaScriptSerializer class is present in System.Web.Script.Serialization namespace.
+
+using System;
+using System.Collections.Generic;
+using System.Web.Script.Serialization;
+
+namespace Demo
+{
+    public partial class WebForm1 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            Employee employee1 = new Employee
+            {
+                firstName = "Todd",
+                lastName = "Grover",
+                gender = "Male",
+                salary = 50000
+            };
+
+            Employee employee2 = new Employee
+            {
+                firstName = "Sara",
+                lastName = "Baker",
+                gender = "Female",
+                salary = 40000
+            };
+
+            List<Employee> listEmployee = new List<Employee>();
+            listEmployee.Add(employee1);
+            listEmployee.Add(employee2);
+
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            string JSONString = javaScriptSerializer.Serialize(listEmployee);
+
+            Response.Write(JSONString);
+        }
+    }
+}
+
+Output : 
+[{"firstName":"Todd","lastName":"Grover","gender":"Male","salary":50000},{"firstName":"Sara","lastName":"Baker","gender":"Female","salary":40000}] 
+
+The following example converts a JSON string to List<Employee> objects. Deserialize() method of JavaScriptSerializer class converts a JSON string to a .NET object. 
+
+ 
+
+
+string jsonString = "[{\"firstName\":\"Todd\",\"lastName\":\"Grover\",\"gender\":\"Male\",\"salary\":50000},{\"firstName\":\"Sara\",\"lastName\":\"Baker\",\"gender\":\"Female\",\"salary\":40000}]";
+
+JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+List<Employee> employees = (List<Employee>)javaScriptSerializer.Deserialize(jsonString, typeof(List<Employee>));
+
+foreach (Employee employee in employees)
+{
+    Response.Write("First Name = " + employee.firstName + "<br/>");
+    Response.Write("Last Name = " + employee.lastName + "<br/>");
+    Response.Write("Gender = " + employee.gender + "<br/>");
+    Response.Write("Salary = " + employee.salary + "<br/><br/>");
+}
+
+Output : 
+
+------------------------------------------------------------------------------------------------------------
+
+jQuery DOM manipulation methods
+
+In this video we will discuss
+1. What are jQuery DOM manipulation methods
+2. How to set attribute values using jQuery attr() method
+3. How to retrieve attribute values using jQuery attr() method
+4. How to set multiple attribute values using jQuery attr() method
+5. How to remove an attribute using jQuery removeAttr() method
+
+What are jQuery DOM manipulation methods
+jQuery DOM manipulation methods manipulate the DOM in some manner. The complete list of jQuery DOM manipulation methods can be found at the following link.
+http://api.jquery.com/category/manipulation/
+
+jQuery attr method is used to set or retrieve attribute values of html elements.
+
+Retrieves the title attribute value of the first matching element
+$('div').attr('title')
+
+Example : In this example we have 2 DIV elements. Since attr() function retrieves only the attribute value of first matching element, we only get the title attribute value of the first DIV element.
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            alert($('div').attr('title'));
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div id="div10" title="My DIV1">
+        DIV 1
+    </div>
+    <div id="div11" title="My DIV2">
+        DIV 2
+    </div>
+</body>
+</html>
+
+To retrieve the title attribute value of all the matching elements, jQuery each() method can be used.
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('div').each(function () {
+            alert($(this).attr('title'));
+        });
+    });
+</script>
+
+Sets the title attribute value of all the matching elements to "new div title"
+$('div').attr('title', 'new div title');
+
+Example : If you want to set the same value for the title attribute of all the elements, then there is no need to loop thru each element. All the div elements in this case will have 'new div title' as the title attribute value.
+<script type="text/javascript">
+    $(document).ready(function () {
+        // set the same title attribute value for all the DIV elements
+        $('div').attr('title', 'new div title');
+
+        // Retrieve and alert the title attribute value of all DIV elements
+        $('div').each(function () {
+            alert($(this).attr('title'));
+        });
+    });
+</script>
+
+If you want to set a different value for the title attribute, then you may need to loop thru each element.
+<script type="text/javascript">
+    $(document).ready(function () {
+        // sets a different title attribute value for each DIV element
+        $('div').each(function (i) {
+            $(this).attr('title', 'div ' + (i + 1) + ' title');
+        });
+
+        // Retrieve and alert the title attribute value of all DIV elements
+        $('div').each(function () {
+            alert($(this).attr('title'));
+        });
+    });
+</script>
+
+How to set multiple attribute values : Using a JSON object to set multiple attribute values
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var config = {
+                'title': 'New Div Title',
+                'style': 'border:3px solid red;',
+                'name': 'My Div'
+            };
+
+            $('div').attr(config);
+
+            var result = '';
+            $('div').each(function () {
+                result += 'title = ' + $(this).attr('title') + '<br/>';
+                result += 'style = ' + $(this).attr('style') + '<br/>';
+
+                result += 'name = ' + $(this).attr('name') + '<br/><br/>';
+            });
+
+            $('#resultSpan').html(result);
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div id="div12" title="My DIV1">
+        DIV 1
+    </div>
+    <br />
+    <div id="div13" title="My DIV2">
+        DIV 2
+    </div>
+    <br />
+    <span id="resultSpan">
+    </span>
+</body>
+</html>
+Output:
+
+
+Instead of creating a separate JSON object (config) and then passing it to attr() method, you can create the JSON object inline.
+$('div').attr({
+    'title': 'New Div Title',
+    'style': 'border:3px solid red;',
+    'name': 'My Div'
+});
+
+You can also use method chaining to set multiple attribute values
+$('div')
+    .attr('title', 'New Div Title')
+    .attr('style', 'border:3px solid red;')
+    .attr('name', 'My Div');
+
+How to remove an attribute using jQuery removeAttr() method : The following line of code removes title attribute of all the div elements that have a title attribute.
+$('div[title]').removeAttr('title');
+
+Example : 
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var result = 'DIV Elements with title attribute = ' + $('div[title]').length + '<br/>';
+            result += 'Removing title attribute <br/>';
+            $('div[title]').removeAttr('title');
+            result += 'DIV Elements with title attribute = ' + $('div[title]').length;
+
+            $('#resultSpan').html(result);
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div id="div14" title="My DIV1">
+        DIV 1
+    </div>
+    <br />
+    <div id="div15" title="My DIV2">
+        DIV 2
+    </div>
+    <br />
+    <span id="Span1">
+    </span>
+</body>
+</html>
+
+Output : 
+
+
+--------------------------------------------------------------------------------------------------------
+
+jQuery wrap elements
+In this video we will discuss how to wrap and unwrap elements
+
+The following jquery methods are used to wrap and unwrap elements. Since these methods modify DOM, they belong to DOM manipulation category.
+wrap
+unwrap
+wrapAll
+wrapInner
+
+wrap - Wrap an HTML structure around each element in the set of matched elements.
+
+Consider the following HTML
+<div id="div16">
+    DIV 1
+</div>
+<div id="div17">
+    DIV 2
+</div>
+<div id="div18">
+    DIV 3
+</div>
+
+The following line of code wraps each of the above div element with another div element.
+$('div').wrap('<div class="containerDiv"></div>');
+
+So the HTML in the DOM would now look as shown below. To view the DOM HTML use the browser developer tools.
+<div class="containerDiv">
+    <div id="div19">
+        DIV 1
+    </div>
+</div>
+<div class="containerDiv">
+    <div id="div20">
+        DIV 2
+    </div>
+</div>
+<div class="containerDiv">
+    <div id="div21">
+        DIV 3
+    </div>
+</div>
+
+Example : 
+<html>
+<head>
+    <title></title>
+    <style>
+        .containerDiv {
+            background-color: red;
+            color: white;
+            font-weight: bold;
+            margin: 5px;
+        }
+    </style>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            alert($('div.containerDiv').length);
+            $('div').wrap('<div class="containerDiv"></div>');
+            alert($('div.containerDiv').length);
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div id="div22">
+        DIV 1
+    </div>
+    <div id="div23">
+        DIV 2
+    </div>
+    <div id="div24">
+        DIV 3
+    </div>
+</body>
+</html>
+
+Output : 
+
+unwrap - Remove the parents of the set of matched elements from the DOM.
+
+Example : 
+<html>
+<head>
+    <title></title>
+    <style>
+        .containerDiv {
+            background-color: red;
+            color: white;
+            font-weight: bold;
+            margin: 5px;
+        }
+    </style>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            alert($('div.containerDiv').length);
+            $('div').wrap('<div class="containerDiv"></div>');
+            alert($('div.containerDiv').length);
+            $('div').unwrap();
+            alert($('div.containerDiv').length);
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div id="div25">
+        DIV 1
+    </div>
+    <div id="div26">
+        DIV 2
+    </div>
+    <div id="div27">
+        DIV 3
+    </div>
+</body>
+</html>
+
+wrapAll - Wrap an HTML structure around all elements in the set of matched elements.
+
+Consider the following HTML
+<div id="div28">
+    DIV 1
+</div>
+<div id="div29">
+    DIV 2
+</div>
+<div id="div30">
+    DIV 3
+</div>
+
+The following line of code wraps all of the matching div element with another div element.
+$('div').wrapAll('<div class="containerDiv"></div>');
+
+
+So the HTML in the DOM would now look as shown below.
+<div class="containerDiv">
+    <div id="div31">
+        DIV 1
+    </div><div id="div32">
+        DIV 2
+    </div><div id="div33">
+        DIV 3
+    </div>
+</div>
+
+Example : 
+<html>
+<head>
+    <title></title>
+    <style>
+        .containerDiv {
+            background-color: red;
+            color: white;
+            font-weight: bold;
+            margin: 5px;
+        }
+    </style>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            alert($('div.containerDiv').length);
+            $('div').wrapAll('<div class="containerDiv"></div>');
+            alert($('div.containerDiv').length);
+            $('div').unwrap();
+            alert($('div.containerDiv').length);
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div id="div34">
+        DIV 1
+    </div>
+    <div id="div35">
+        DIV 2
+    </div>
+    <div id="div36">
+        DIV 3
+    </div>
+</body>
+</html>
+
+wrapInner - Wrap an HTML structure around the content of each element in the set of matched elements.
+
+Consider the following HTML
+<div id="div37">
+    DIV 1
+</div>
+<div id="div38">
+    DIV 2
+</div>
+<div id="div39">
+    DIV 3
+</div>
+
+The following line of code wraps each of the above div element content with another div element.
+$('div').wrapInner('<div class="containerDiv"></div>');
+
+So the HTML in the DOM would now look as shown below.
+<div id="div40">
+    <div class="containerDiv">
+        DIV 1
+    </div>
+</div>
+<div id="div41">
+    <div class="containerDiv">
+        DIV 2
+    </div>
+</div>
+<div id="div42">
+    <div class="containerDiv">
+        DIV 3
+    </div>
+</div>
+
+Example : 
+<html>
+<head>
+    <title></title>
+    <style>
+        .containerDiv {
+            background-color: red;
+            color: white;
+            font-weight: bold;
+            margin: 5px;
+        }
+    </style>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('div').wrapInner('<div class="containerDiv"></div>');
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div id="div43">
+        DIV 1
+    </div>
+    <div id="div44">
+        DIV 2
+    </div>
+    <div id="div45">
+        DIV 3
+    </div>
+</body>
+</html>
+
+----------------------------------------------------------------------------------------------
+
+jQuery append elements
+In this video we will discuss how to append and prepend elements
+
+To append elements we have
+append()
+appendTo()
+
+To prepend elements we have
+prepend()
+prependTo()
+
+Since these methods modify DOM, they belong to DOM manipulation category.
+
+jquery append example : The following example appends the specified HTML to all div elements
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('div').append('<b> Tutorial</b>');
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div id="div46">jQuery</div>
+    <div id="div47">C#</div>
+    <div id="div48">ASP.NET</div>
+</body>
+</html>
+
+Output :
+
+jquery appendto example : The above example can be rewritten using appendTo as shown below.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('<b> Tutorial</b>').appendTo('div');
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div id="div49">jQuery</div>
+    <div id="div50">C#</div>
+    <div id="div51">ASP.NET</div>
+</body>
+</html>
+
+Output :
+
+What is the difference between append and appendTo
+Both these methods perform the same task. The only difference is in the syntax. With append method we first specify the target elements and then the content that we want to append, where as we do the opposite with appendTo method.
+
+jquery prepend example : The following example prepends the specified HTML to all div elements
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('div').prepend('<b>Tutorial </b>');
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div id="div52">jQuery</div>
+    <div id="div53">C#</div>
+    <div id="div54">ASP.NET</div>
+</body>
+</html>
+
+Output :
+
+jquery prependTo example : The above example can be rewritten using prependTo as shown below.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('<b>Tutorial </b>').prependTo('div');
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div id="div55">jQuery</div>
+    <div id="div56">C#</div>
+    <div id="div57">ASP.NET</div>
+</body>
+</html>
+
+Output :
+
+What is the difference between prepend and prependTo
+Both these methods perform the same task. The only difference is in the syntax. With prepend method we first specify the target elements and then the content that we want to prepend, where as we do the opposite with prependTo method.
+
+ 
+
+
+jQuery append existing element example : These methods (append, appendTo, prepend, prependTo) can also select an element on the page and insert it into another
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('div').append($('#mySpan'));
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <span id="mySpan"> Programming</span>
+    <div id="div58">jQuery</div>
+    <div id="div59">C#</div>
+    <div id="div60">ASP.NET</div>
+</body>
+</html>
+
+Output : 
+
+Difference between prepend and append
+prepend method, inserts the specified content to the beginning of each element in the set of matched elements, where as append method inserts the specified content to the end of each element in the set of matched elements.
+
+------------------------------------------------------------------------------------------------------------
+
+jQuery insert element before and after
+
+In this video we will discuss how to insert elements before and after certain elements on the page.
+
+To insert an element before another element
+before
+insertBefore
+
+To insert an element after another element
+after
+inserAfter
+
+Since these methods modify DOM, they belong to DOM manipulation category.
+
+jquery before example
+
+Consider the following HTML
+<span>Training Courses</span>
+<div>jQuery</div>
+<div>C#</div>
+<div>ASP.NET</div>
+
+The following line of code inserts h3 element before each of the div elements
+$('div').before('<h3>Programming</h3>');
+
+So the HTML in the DOM would now look as shown below. Notice that h3 element is added before every div element
+<span>Training Courses</span>
+<h3>Programming</h3><div>jQuery</div>
+<h3>Programming</h3><div>C#</div>
+<h3>Programming</h3><div>ASP.NET</div>
+
+jquery insertbefore example : insertbefore method methods perform the same task as before. The only difference is in the syntax. With before method we first specify the target elements and then the content that we want to insert, where as we do the opposite with insertbefore method.
+
+$('<h3>Programming</h3>').insertBefore('div');
+
+jquery after example 
+
+Consider the following HTML
+<span>Training Courses</span>
+<div>jQuery</div>
+<div>C#</div>
+<div>ASP.NET</div>
+
+The following line of code inserts h3 element after each of the div elements
+$('div').after('<h3>Programming</h3>');
+
+So the HTML in the DOM would now look as shown below. Notice that h3 element is added after every div element
+<span>Training Courses</span>
+<div>jQuery</div><h3>Programming</h3>
+<div>C#</div><h3>Programming</h3>
+<div>ASP.NET</div><h3>Programming</h3>
+
+jquery insertafter example : insertafter method methods perform the same task as after. The only difference is in the syntax. With after method we first specify the target elements and then the content that we want to insert, where as we do the opposite with insertafter method.
+
+$('<h3>Programming</h3>').insertAfter('div');
+
+jquery insert existing element before or after another element : These methods (before, insertBefore, after, inserAfter) can also select an existing element on the page and insert it before or after another element.
+
+Consider the following HTML
+<span>Training Courses</span>
+<div>jQuery</div><h3>Programming</h3>
+<div>C#</div><h3>Programming</h3>
+<div>ASP.NET</div><h3>Programming</h3>
+
+The following line of code inserts span element after each of the div elements
+$('div').after($('span'));
+
+So the HTML in the DOM would now look as shown below.
+<div>jQuery</div><span>Training Course</span>
+<div>C#</div><span>Training Course</span>
+<div>ASP.NET</div><span>Training Course</span>
+
+------------------------------------------------------------------------------------
+
+
+jQuery add or remove class
+
+In this video we will discuss
+1. How to check if an element has a css class
+2. How to add or remove css classes
+3. How to toggle css classes
+
+
+hasClass	Returns true if an element has the specified class otherwise false
+addClass	Adds one or more specified classes. To add multiple classes separate them with a space.
+removeClass	Removes one or multiple or all classes. To remove multiple classes separate them with a space. To remove all classes, don't specify any class name.
+toggleClass	Toggles one or more specified classes. If the element has the specified class then it is removed, if the class is not present then it is added.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <style>
+        .boldClass {
+            font-weight: bold;
+        }
+
+        .italicsClass {
+            font-style: italic;
+        }
+
+        .colorClass {
+            color: red;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btn1').click(function () {
+                $('p').addClass('colorClass');
+            });
+
+            $('#btn2').click(function () {
+                $('p').removeClass('colorClass');
+            });
+
+            $('#btn3').click(function () {
+                $('p').addClass('colorClass italicsClass');
+            });
+
+            $('#btn4').click(function () {
+                $('p').removeClass('colorClass italicsClass');
+            });
+
+            $('#btn5').click(function () {
+                $('p').addClass('colorClass italicsClass boldClass');
+            });
+
+            $('#btn6').click(function () {
+                $('p').removeClass();
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <p>Pragim Technologies</p>
+    <table>
+        <tr>
+            <td>
+                <input id="btn1" style="width:250px" type="button"
+                       value="Add Color Class" />
+            </td>
+            <td>
+                <input id="btn2" style="width:250px" type="button"
+                       value="Remove Color Class" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input id="btn3" style="width:250px" type="button"
+                       value="Add Color and Italics Classes" />
+            </td>
+            <td>
+                <input id="btn4" style="width:250px" type="button"
+                       value="Remove Color and Italics Classes" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input id="btn5" style="width:250px" type="button"
+                       value="Add Color, Italics & Bold Classes" />
+            </td>
+            <td>
+                <input id="btn6" style="width:250px" type="button"
+                       value="Remove All Classes" />
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+
+Output :
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <style>
+        .textBoxStyle {
+            background-color: green;
+            color: white;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[type="text"]').each(function () {
+                $(this).focus(function () {
+                    $(this).addClass('textBoxStyle');
+                });
+
+                $(this).blur(function () {
+                    $(this).removeClass('textBoxStyle');
+                });
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <table>
+        <tr>
+            <td>First Name</td>
+            <td><input type="text" /></td>
+        </tr>
+        <tr>
+            <td>Last Name</td>
+            <td><input type="text" /></td>
+        </tr>
+        <tr>
+            <td>Gender</td>
+            <td>
+                <select>
+                    <option value="select">Please Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td><input type="text" /></td>
+        </tr>
+    </table>
+</body>
+</html>
+
+Output :
+
+-----------------------------------------------------------------------------------------------
+
+Difference between $.each and .each
+In jQuery there are 2 versions of each() method
+1. .each()
+2. $.each() or jQuery.each()
+
+Please note : $ is shortcut for jQuery.
+
+What is the difference
+.each is used to iterate over the items in a jQuery collection 
+
+Example : In this example, the jQuery selector $('li') returns a jQuery object collection. So to loop thru the objects in the jQuery collection we are using .each() method. Notice this method is called on the jQuery object collection, that the selector returns, so the .each() method knows the items it has to iterate over. 
+
+The callback method has 2 parameters
+1) index - The index of the element 
+2) element - The DOM element that we are currently iterating over
+
+Since the element is a raw DOM object, to use use jQuery methods you have to wrap it using the jQuery wrapper $ as shown below.
+$(element)
+
+Instead of using element parameter, you can also use this keyword, which also refers to the raw DOM element that we are currently iterating over. To use jQuery methods you have to wrap it using the jQuery wrapper $ as shown below.
+$(this)
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var result = '';
+            $('li').each(function (index, element) {
+                result += 'Index = ' + index + ', Value = ' + $(element).text() + '<br/>';
+                //or
+                //result += 'Index = ' + index + ', Value = ' + $(this).text() + '<br/>';
+            });
+            $('#resultDiv').html(result);
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <ul>
+        <li>US</li>
+        <li>India</li>
+        <li>UK</li>
+        <li>Canada</li>
+        <li>Australia</li>
+    </ul>
+    <div id="Div61"></div>
+</body>
+</html>
+
+Output : 
+
+$.each() or jQuery.each() is used for iterating over javascript objects and arrays.
+
+Example : In the example below intArray is a JavaScript array. So to loop thru the elements in the array we are using $.each() function. Notice this function has 2 parameters
+
+1) The JavaScript object or array that we want to iterate over
+2) The callback function that will execute on each iteration
+
+If you want to use .each() instead of $.each() function on the intArray object, wrap it using the jQuery wrapper $ as shown below.
+
+$(intArray).each(function (index, element) {
+    result += 'Index = ' + index + ', Value = ' + element + '<br />';
+})
+
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var intArray = [100, 200, 300, 400, 500];
+            var result = '';
+
+            $.each(intArray, function (index, element) {
+                result += 'Index = ' + index + ', Value = ' + element + '<br/>';
+            });
+
+            $('#resultDiv').html(result);
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div id="Div62"></div>
+</body>
+</html>
+
+Output :
+
+Using $.each() to iterate over a JavaScript object : In this example, jsObject is a JavaScript object. In this example, $.each()  is used to iterate over the JavaScript object properties.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var jsObject = {
+                'USA': 'Washington D.C.',
+                'India': 'New Delhi',
+                'UK': 'London',
+                'Australia': 'Canberra'
+            };
+
+            var result = '';
+
+            $.each(jsObject, function (key, value) {
+                result += key + ' - ' + value + '<br/>';
+            });
+
+            $('#resultDiv').html(result);
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div id="Div63"></div>
+</body>
+</html>
+
+Output :
+
+In summary, .each() method is used to iterate over the items in a jQuery collection where as $.each() method is used to iterate over javascript objects or arrays.
+
+----------------------------------------------------------------------------------------------------------
+
+jQuery map method
+
+In this video we will discuss jQuery map method
+
+Just like jquery each() method, map() method is also used to iterate over matched elements. 
+
+However, there are some differences between map() and each() methods which we will discuss in our next video.
+
+In general, if you want to create an array or concatenated string based on all matched elements in a jQuery selector, it is better to use map() over each() method.
+
+Consider the following HTML
+<ul>
+    <li>US</li>
+    <li>India</li>
+    <li>UK</li>
+    <li>Canada</li>
+    <li>Australia</li>
+</ul>
+
+To create an array of list item text values, we could use either map() or each() methods. 
+
+Using each() method
+$(document).ready(function () {
+    var result = [];
+
+    $('li').each(function (index, element) {
+        result.push($(element).text());
+    });
+
+    alert(result);
+});
+
+Using map() method
+$(document).ready(function () {
+    alert($('li').map(function (index, element) {
+        return $(element).text();
+    }).get());
+});
+
+To create a pipe delimited string of all list item text values, we could use either map() or each() methods. The output should be as shown below.
+US|India|UK|Canada|Australia
+
+Using each() method
+$(document).ready(function () {
+    var result = '';
+
+    $('li').each(function (index, element) {
+        result += $(element).text() + "|";
+    });
+    result = result.substr(0, result.length - 1);
+
+    alert(result);
+});
+
+Using map() method
+$(document).ready(function () {
+    alert($('li').map(function (index, element) {
+        return $(element).text();
+    }).get().join('|'));
+});
+
+In our next video, we will discuss the differences between map and each methods and when to use one over the other.
+
+---------------------------------------------------------------------------------------------------------
+
+
+Difference between each and map in jquery
+In this video we will discuss the difference between each and map functions in jquery
+$.map	$.each
+map method can be used as an iterator.	each method is an immutable iterator
+Returns a new array	Returns the original array
+The order of callback arguments - element, index.
+$.map(elems, function () { element, index }, arg)	The order of callback arguments - index, element.
+$.each(elems, function () { index, element }, arg)
+Does not have a way to terminate the iteration	Return false to terminate the iteration
+
+Example : Notice that the callback arguments in the each method are the reverse of the callback arguments in the map function. Also notice that map returns a new array where as each method returns the original array. This proves the point that each method is an immutable iterator where as map is not.
+
+$(document).ready(function () {
+    var intArray = [1, 2, 3, 4, 5];
+
+    function functionA(index, element) {
+        return element * 5;
+    }
+
+    function functionB(element, index) {
+        return element * 5;
+    }
+
+    var result1 = $.each(intArray, functionA);
+    var result2 = $.map(intArray, functionB);
+
+    document.write('each = ' + result1);
+    document.write('<br/>')
+    document.write('map = ' + result2);
+});
+
+Output :
+
+Example : Notice that each method terminates the iteration when the element value is 3. The values 3, 4 and 5 are not written to the document. With map method we are not able to break the iteration. When the element value is 3, map method returns false and then continues writing 4 and 5 to the document.
+
+$(document).ready(function () {
+    var intArray = [1, 2, 3, 4, 5];
+
+    $.each(intArray, function (index, element) {
+        if (element == 3)
+            return false;
+
+        document.write(element + ',');
+    });
+
+    document.write('<br/>');
+
+    $.map(intArray, function (element, index) {
+        if (element == 3)
+            return false;
+
+        document.write(element + ',');
+    });
+});
+
+Output : 
+
+---------------------------------------------------------------------------------------------------
+
+jQuery change event
+In this video we will discuss jQuery change event.
+change event is fired when an element value changes. All the following elements fire this event
+1. input 
+2. textarea 
+3. select
+
+select, radio buttons and checkboxes fire the change event as soon as a selection is made, where as the other element types (textboxes & textarea) wait until they loose focus.
+
+Consider the following HTML
+<table>
+    <tr>
+        <td>First Name</td>
+        <td>
+            <input id="txtFirstName" type="text" class="inputRequired" />
+        </td>
+    </tr>
+    <tr>
+        <td>Last Name</td>
+        <td>
+            <input id="txtLastName" type="text" class="inputRequired" />
+        </td>
+    </tr>
+    <tr>
+        <td>City</td>
+        <td>
+            <select id="ddlCity" class="inputRequired">
+                <option value="Select">Select</option>
+                <option value="New York">New York</option>
+                <option value="London">London</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Sydney">Sydney</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>Favourite Color</td>
+        <td>
+            <input id="radioRed" name="color" type="radio" value="Red"
+                    class="inputRequired" />Red
+            <input id="radioGreen" name="color" type="radio" value="Green"
+                    class="inputRequired" />Green
+            <input id="radioBlue" name="color" type="radio" value="Blue"
+                    class="inputRequired" />Blue
+        </td>
+    </tr>
+    <tr>
+        <td>Contact Method</td>
+        <td>
+            <input id="chkBoxEmail" type="checkbox" value="Email"
+                    class="inputRequired" />Email
+            <input id="chkBoxPhone" type="checkbox" value="Phone"
+                    class="inputRequired" />Phone
+            <input id="chkBoxSocialMedia" type="checkbox" value="Social Media"
+                    class="inputRequired" />Social Media
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Comments
+        </td>
+        <td>
+            <textarea id="txtComments" class="inputRequired"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input id="Button1" type="button" value="Submit" />
+        </td>
+        <td>
+            <div id="div64"></div>
+        </td>
+    </tr>
+</table>
+
+As soon as the selection in the dropdownlist changes, we want to handle the change event and display the selected value in the div element with id="divResult". In the example below, we are using the id selector, so only the select element change event is handled.
+$(document).ready(function () {
+    $('#ddlCity').change(function () {
+        var selectedValue = $(this).val();
+        if (selectedValue == "Select")
+            selectedValue = "Please select city";
+        $('#divResult').html(selectedValue);
+    });
+});
+
+The following code handles the change event of all the input elements (textbox, radio button, checkbox). Notice that in this example we are using the jquery element selector. Change event of select and textarea is not handled.
+
+$(document).ready(function () {
+    var result = '';
+    $('input').change(function () {
+        if (result == '') {
+            result += $(this).val();
+        }
+        else {
+            result += ', ' + $(this).val();
+        }
+
+        $('#divResult').html(result);
+    });
+});
+
+The following code handles the change event of all the elements on the page. Notice that in this example we are using the jquery class selector.
+$(document).ready(function () {
+    var result = '';
+    $('.inputRequired').change(function () {
+        if (result == '') {
+            result += $(this).val();
+        }
+        else {
+            result += ', ' + $(this).val();
+        }
+
+        $('#divResult').html(result);
+    });
+});
+
+
+-------------------------------------------------------------------------------------------------------
+
+
+jQuery mouse events
+In this video we will discuss jQuery mouse events
+If you want to follow along with the example, you will need the image below. Please download the image.
+Consider the HTML below
+<table>
+    <tr>
+        <td>First Name</td>
+        <td style="vertical-align:middle">
+            <input id="Text1" type="text" class="inputRequired" />
+
+        </td>
+        <td><img id="imgFirstNameHelp" src="help.png" /></td>
+        <td><div id="divFirstNameHelp" style="display:none">
+            First Name as shown in passport</div></td>
+    </tr>
+    <tr>
+        <td>Last Name</td>
+        <td>
+            <input id="Text2" type="text" class="inputRequired" />
+        </td>
+        <td><img id="imgLastNameHelp" src="help.png" /></td>
+        <td><div id="divLastNameHelp" style="display:none">
+            Last Name as shown in passport</div></td>
+    </tr>
+    <tr>
+        <td>City</td>
+        <td>
+            <select id="Select2" class="inputRequired">
+                <option value="Select">Select</option>
+                <option value="New York">New York</option>
+                <option value="London">London</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Sydney">Sydney</option>
+            </select>
+        </td>
+        <td><img id="imgCityHelp" src="help.png" /></td>
+        <td><div id="divCityHelp" style="display:none">
+            Your residence city</div></td>
+    </tr>
+    <tr>
+        <td>Favourite Color</td>
+        <td>
+            <input id="radio1" name="color" type="radio" value="Red"
+                   class="inputRequired" />Red
+            <input id="radio2" name="color" type="radio" value="Green"
+                   class="inputRequired" />Green<br />
+            <input id="radio3" name="color" type="radio" value="Blue"
+                   class="inputRequired" />Blue
+        </td>
+        <td><img id="imgColorHelp" src="help.png" /></td>
+        <td><div id="divColorHelp" style="display:none">
+            Your Favourite Color</div></td>
+    </tr>
+    <tr>
+        <td>Contact Method</td>
+        <td>
+            <input id="Checkbox1" type="checkbox" value="Email"
+                   class="inputRequired" />Email
+            <input id="Checkbox2" type="checkbox" value="Phone"
+                   class="inputRequired" />Phone<br />
+            <input id="Checkbox3" type="checkbox" value="Social Media"
+                   class="inputRequired" />Social Media
+        </td>
+        <td><img id="imgContactMethodHelp" src="help.png" /></td>
+        <td><div id="divContactMethodHelp" style="display:none">
+            How should we contact you</div></td>
+    </tr>
+    <tr>
+        <td>
+            Comments
+        </td>
+        <td>
+            <textarea id="Textarea1" class="inputRequired"></textarea>
+        </td>
+        <td><img id="imgCommentsHelp" src="help.png" /></td>
+        <td><div id="divCommentsHelp" style="display:none">
+            Your comments please</div></td>
+    </tr>
+    <tr>
+        <td>
+            <input id="Button2" type="button" value="Submit" />
+        </td>
+        <td>
+            <div id="div65"></div>
+        </td>
+        <td></td>
+    </tr>
+</table>
+
+When the mouse is over the help icon, we want to display the help text, when the mouse is out, hide the help text.
+
+To achieve this mouseover and mouseout events can be used as shown below.
+
+$(document).ready(function () {
+    $('img[src="help.png"]').mouseover(function () {
+        $('#' + getDivId(this)).fadeIn(400);
+        $(this).css('cursor', 'pointer');
+    }).mouseout(function () {
+        $('#' + getDivId(this)).fadeOut(400);
+    });
+
+    function getDivId(helpIcon) {
+        var helpIconId = $(helpIcon).attr('id');
+        return helpIconId.replace('img', 'div');
+    }
+});
+
+mouseenter and mouseleave events can also be used.
+
+$(document).ready(function () {
+    $('img[src="help.png"]').mouseenter(function () {
+        $('#' + getDivId(this)).fadeIn(400);
+        $(this).css('cursor', 'pointer');
+    }).mouseleave(function () {
+        $('#' + getDivId(this)).fadeOut(400);
+    });
+
+    function getDivId(helpIcon) {
+        var helpIconId = $(helpIcon).attr('id');
+        return helpIconId.replace('img', 'div');
+    }
+});
+
+We can also achieve the same using hover. hover() function accepts two function arguments, one for mouseenter event and one for mouseleave event.
+
+$( selector ).hover( handlerIn, handlerOut ) 
+is shorthand for
+$( selector ).mouseenter( handlerIn ).mouseleave( handlerOut )
+
+$(document).ready(function () {
+    $('img[src="help.png"]').hover(function () {
+        $('#' + getDivId(this)).fadeIn(400);
+        $(this).css('cursor', 'pointer');
+    }, function () {
+        $('#' + getDivId(this)).fadeOut(400);
+    });
+
+    function getDivId(helpIcon) {
+        var helpIconId = $(helpIcon).attr('id');
+        return helpIconId.replace('img', 'div');
+    }
+});
+
+----------------------------------------------------------------------------------------
+
+jQuery event object
+In this video we will discuss
+1. How to retrieve event data using event object
+2. How to convert JavaScript event object to jQuery event object
+
+Whenever an event (like click, mouseover, mouseout etc) occurs, the relevant data about that event is placed into the event object. For example, the event object contains event data like, the X and Y coordinates of the mouse pointer when the event occurred, the HTML element that fired the event, which mouse button is clicked etc.
+
+Obtaining the event object is straightforward. The event object is always passed to the event handler method. Let us understand this with an example. When we click the button, we want to capture the following event data
+1. Event name
+2. Mouse X coordinate when the event occured
+3. Mouse Y coordinate when the event occured
+4. The control that raised the event
+5. The HTML tag name that raised the event
+
+
+Notice that in the example below, we are passing event object to getEventDetails() method. This object is the raw JavaScript event object. The type property gives us the event name that occured. pageX and pageY properties return the X and Y coordinates of the mouse pointer. Target property returns the HTML element that raised the event. Target, pageX and pageY properties are supported by all modern browsers and Internet Explorer 9 and above. The following code will not work in Internet Explorer 8 and earlier versions. In addition to click event, the following example returns mouseover and mouseout event data.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btn').click(function () {
+                getEventDetails(event);
+            }).mouseover(function () {
+                getEventDetails(event);
+            }).mouseout(function () {
+                getEventDetails(event);
+            });
+
+            function getEventDetails(event) {
+                var eventDetails = "Event = " + event.type +
+                                   "<br/> X = " + event.pageX +
+                                   "<br/>Y = " + event.pageY +
+                                   "<br/>Target Type = " + event.target.type +
+                                   "<br/>Target Tag Name = " + event.target.tagName;
+
+                $('#divResult').html(eventDetails);
+            }
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <input id="btn" type="button" value="Click me" /><br /><br />
+    <div id="div66"></div>
+</body>
+</html>
+
+Cross-browser solution : For the above code to work in all browsers including Internet Explorer 8 and earlier versions, modify getEventDetails() function as shown below. Notice that we are converting JavaScript event object to jQuery event object using $.event.fix()
+
+function getEventDetails(event) {
+    var e = $.event.fix(event);
+    var eventDetails = "Event = " + e.type +
+                        "<br/> X = " + e.pageX +
+                        "<br/>Y = " + e.pageY +
+                        "<br/>Target Type = " + e.target.type +
+                        "<br/>Target Tag Name = " + e.target.tagName;
+
+    $('#divResult').html(eventDetails);
+}
+
+------------------------------------------------------------------------------------------------------------
+
+jQuery to detect which mouse button clicked
+In this video we will discuss, how to detect which mouse button is clicked using jQuery.
+
+
+ 
+
+With raw JavaScript event object : Depending on the browser, event.button or event.which properties of the event object are used to determine which mouse button is clicked. 
+
+IE 8 & earlier versions use event.button property
+Left Button 1
+Middle Button 4
+Right Button 2
+
+IE 9 & later versions and most other W3C compliant browsers use event.which property
+Left Button 1
+Middle Button 2
+Right Button 3
+
+If you are using raw JavaScript event object, the following is the amount of code that you have to write to detect which mouse button is clicked. This code works in all browsers.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        function whichMouseButtonClicked(event) {
+            var whichButton;
+            if (event.which) {
+                switch (event.which) {
+                    case 1: whichButton = "Left Button Clicked"; break;
+                    case 2: whichButton = "Middle Button Clicked"; break;
+                    case 3: whichButton = "Right Button Clicked"; break;
+                    default: whichButton = "Invalid Button Clicked"; break;
+                }
+            }
+            else {
+                switch (event.button) {
+                    case 1: whichButton = "Left Button Clicked"; break;
+                    case 4: whichButton = "Middle Button Clicked"; break;
+                    case 2: whichButton = "Right Button Clicked"; break;
+                    default: whichButton = "Invalid Button Clicked"; break;
+                }
+            }
+
+            document.getElementById('divResult').innerHTML = whichButton;
+        }
+    </script>
+</head>
+<body style="font-family:Arial">
+    <input id="Button3" type="button" value="Click Me"
+           onmouseup="whichMouseButtonClicked(event)" />
+    <br /><br />
+    <div id="div67"></div>
+</body>
+</html>
+
+jQuery normalizes which property of the event object so it will work across all browsers. The amount of code you have to write is lot less.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btn').mouseup(function (event) {
+                switch (event.which) {
+                    case 1: whichButton = "Left Button Clicked"; break;
+                    case 2: whichButton = "Middle Button Clicked"; break;
+                    case 3: whichButton = "Right Button Clicked"; break;
+                    default: whichButton = "Invalid Button Clicked"; break;
+                }
+                $('#divResult').html(whichButton);
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <input id="Button4" type="button" value="Click Me" />
+    <br /><br />
+    <div id="div68"></div>
+</body>
+</html>
+
+----------------------------------------------------------------------------------------------
+
+Binding event handlers in jquery
+In this video we will discuss binding event handlers to events using bind() method in jQuery
+
+One way to bind event handlers to events is by using the jQuery shorthand functions like .click, .mouseover etc. Bind method is another way of doing the same.
+
+The following example binds click event handler to the button - btnClickMe
+$('#btnClickMe').bind('click', function () {
+    $('#divResult').html('Button Clicked');
+});
+
+Binds multiple event handlers to the button - btnClickMe. If required, the event object can also be passed to the event handler method, although it is optional.
+$('#btnClickMe').bind('click mouseover mouseout', function (event) {
+    if (event.type == 'click') {
+        $('#divResult').html('Button Clicked at ' + 'X = '
+            + event.pageX + ' Y = ' + event.pageY);
+    }
+    else if (event.type == 'mouseover') {
+        $(this).addClass('ButtonStyle');
+    }
+    else {
+        $(this).removeClass('ButtonStyle');
+    }
+});
+
+Use the unbind() method to unbind the event handler
+$('#btnClickMe').unbind('mouseover');
+
+To unbind all the event handlers of an element, use unbind() method without any parameters
+$('#btnClickMe').unbind();
+
+Please note: If you are using jQuery 1.7 or higher, you should be using on() and off() methods instead of bind() and unbind() methods. We will discuss on() and off() methods in our next video.
+
+Complete Example : 
+
+<html>
+<head>
+    <title></title>
+    <style>
+        .ButtonStyle {
+            background-color: red;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+        }
+    </style>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnClickMe').bind('click mouseover mouseout', function (event) {
+                if (event.type == 'click') {
+                    $('#divResult').html('Button Clicked at '
+                        + 'X = ' + event.pageX + ' Y = ' + event.pageY);
+                }
+                else if (event.type == 'mouseover') {
+                    $(this).addClass('ButtonStyle');
+                }
+                else {
+                    $(this).removeClass('ButtonStyle');
+                }
+            });
+
+            $('#btnEnableMouseOverEffect').click(function () {
+                $('#btnClickMe').bind('mouseover', function () {
+                    $(this).addClass('ButtonStyle');
+                });
+            });
+
+            $('#btnDisableMouseOverEffect').click(function () {
+                $('#btnClickMe').unbind('mouseover');
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <input id="btnClickMe" type="button" value="Click Me" />
+    <input id="btnEnableMouseOverEffect" type="button"
+           value="Enable Mouse Over Effect" />
+    <input id="btnDisableMouseOverEffect" type="button"
+           value="Disable Mouse Over Effect" />
+    <br /><br />
+    <div id="div69"></div>
+</body>
+</html>
+
+------------------------------------------------------------------------------------------------
+
+Binding event handlers using jquery on method
+In this video we will discuss binding event handlers to events using on() method in jQuery
+
+In Part 33 of jQuery Tutorial, we discussed how to bind event handlers using bind() method. If you are using jQuery 1.7 or higher, you should be using on() and off() methods instead of bind() and unbind() methods.
+
+The syntax for using on() and off() methods is very similar to using bind() and unbind() methods. The following example is the same example we worked with in Part 33. Instead of using bind() and unbind() we are using on() and off() methods.
+
+<html>
+<head>
+    <title></title>
+    <style>
+        .ButtonStyle {
+            background-color: red;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+        }
+    </style>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnClickMe').on('click mouseover mouseout', function (event) {
+                if (event.type == 'click') {
+                    $('#divResult').html('Button Clicked at ' + 'X = '
+                        + event.pageX + ' Y = ' + event.pageY);
+                }
+                else if (event.type == 'mouseover') {
+                    $(this).addClass('ButtonStyle');
+                }
+                else {
+                    $(this).removeClass('ButtonStyle');
+                }
+            });
+
+            $('#btnEnableMouseOverEffect').click(function () {
+                $('#btnClickMe').on('mouseover', function () {
+                    $(this).addClass('ButtonStyle');
+                });
+            });
+
+            $('#btnDisableMouseOverEffect').click(function () {
+                $('#btnClickMe').off('mouseover');
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <input id="Button5" type="button" value="Click Me" />
+    <input id="Button6" type="button"
+           value="Enable Mouse Over Effect" />
+    <input id="Button7" type="button"
+           value="Disable Mouse Over Effect" />
+    <br /><br />
+    <div id="div70"></div>
+</body>
+</html>
+
+In the example above we are binding a single anonymous function as the event handler for all the 3 events
+1. click
+2. mouseover
+3. mouseout
+
+If you want to bind a different anonymous function, you could do so using the following syntax.
+$('#btnClickMe').bind({
+    click: function (event) {
+        $('#divResult').html('Button clicked at X = '
+            + event.pageX + ' Y = ' + event.pageY);
+    },
+    mouseover: function () {
+        $(this).addClass('ButtonStyle');
+    },
+    mouseout: function () {
+        $(this).removeClass('ButtonStyle');
+    }
+});
+
+jQuery shorthand functions (.click, .mouseover, .mouseout etc.) call on() method behind the scenes.
+
+So far in this video series we have seen 3 different ways of binding event handlers in jQuery
+1. Using jQuery shorthand functions (.click, .mouseover, .mouseout etc.)
+element.click(function () { ... });
+
+2. With jQuery version < 1.7, bind() method can be used
+element.bind('click', function () { ... });
+
+3. With jQuery version 1.7 or higher, on() method can be used. 
+element.on('click', function () { ... });
+
+According to jQuery.com, as of jQuery 1.7, the .on() method is the preferred method for attaching event handlers.
+
+---------------------------------------------------------------------------------------------------
+
+Passing data to event handler in jQuery
+In this video we will discuss how to pass data to the event handler function in jQuery
+
+The following example, 
+1. Binds the click event handler to the button using on function
+2. We are passing 3 arguments to the on() function
+    a) The name of the event
+    b) JSON object that contains data that we want to pass to the event handler
+    c) Event handler method name
+3. In the event handler method (sayHello), we access the data using event object's data property.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnClickMe').on('click', {
+                firstName: 'John',
+                lastName: 'Doe'
+            }, sayHello);
+
+            $('#btnClickMe').on('click', {
+                firstName: 'Mary'
+            }, sayHello);
+
+            $('#btnClickMe').on('click', sayHello);
+
+            function sayHello(event) {
+                if (event.data == null) {
+                    alert('No name provided');
+                }
+                else {
+                    alert('Hello ' + event.data.firstName +
+                        (event.data.lastName != null ? ' ' + event.data.lastName : ''));
+                }
+            }
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <input id="Button8" type="button" value="Click Me" />
+</body>
+</html>
+
+Output : 
+Hello John Doe
+Hello Mary
+No name provided
+
+---------------------------------------------------------------------------------------------
+
+jQuery add event handler to dynamically created element
+In this video we will discuss, how to add event handlers to dynamically created elements. Let us understand this with an example.
+The following example, allows us to dynamically create new list item (li), attach a click event handler and add it to the unordered list (ul). This happens when you click "Add a New List Item" button. The problem with this approach is that we are binding a click event handler to every list item. This means if you have 500 list items, then there will be 500 event handlers in the memory and this may negatively affect the performance of your application.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('li').on('click', function () {
+                $(this).fadeOut(500);
+            });
+
+            $('#btnAdd').on('click', function () {
+                var newListItem = $('<li>New List Item</li>').on('click', function () {
+                    $(this).fadeOut(500);
+                });
+
+                $('ul').append(newListItem);
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <input id="btnAdd" type="button" value="Add a New List Item" />
+    <ul>
+        <li>List Item</li>
+        <li>List Item</li>
+    </ul>
+</body>
+</html>
+
+A better way of doing the same from a performance standpoint is shown below. In this example, the click event handler is attached to the listitem (li) parent element (ul). Even if you have 500 list items, there is only one click event handler in memory.
+
+So how does this work
+1. When you click on a list item (li), the event gets bubbled up to its parent (ul) as the list item (li) does not have an event handler 
+2. The bubbled event is handled by the the parent (ul) element, as it has a click event handler.
+3. When a new list item is added dynamicaly, you don't have to add the click event handler to it. Since the newly created list item (li) is added to the same parent element (ul), the click event of this list item also gets bubbled upto the same parent and will be handled by it.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('ul').on('click', 'li', function () {
+                $(this).fadeOut(500);
+            });
+
+            $('#btnAdd').on('click', function () {
+                $('ul').append('<li>New List Item</li>');
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <input id="btnAdd" type="button" value="Add a New List Item" />
+    <ul>
+        <li>List Item</li>
+        <li>List Item</li>
+    </ul>
+</body>
+</html>
+
+---------------------------------------------------------------------------------------------------
+
+jQuery event delegation
+In this video we will discuss the concept of event delegation in jQuery.
+
+Event delegation allows us to attach a single event listener, to a parent element, that will fire for all descendants matching a selector, whether those descendants exist now or are added in the future. Both on() and delegate() functions allow us to perform event delegation. 
+
+How does the following example work : 
+
+1. When you click on a list item (li), the event gets bubbled up to its parent (ul) as the list item (li) does not have it's own click event handler 
+2. The bubbled event is handled by the the parent (ul) element, as it has a click event handler.
+3. When a new list item is added dynamicaly, you don't have to add the click event handler explicitly to it. Since the newly created list item (li) is added to the same parent element (ul), the click event of this list item also gets bubbled upto the same parent and will be handled by it.
+4. undelegate() stops event delegation
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('ul').delegate('li', 'click', function () {
+                $(this).fadeOut(500);
+            });
+
+            $('#btnAdd').on('click', function () {
+                $('ul').append('<li>New List Item</li>');
+            });
+
+            $('#btnUndelegate').on('click', function () {
+                $('ul').undelegate('li', 'click');
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <input id="Button9" type="button" value="Add a New List Item" />
+    <input id="btnUndelegate" type="button" value="Undelegate" />
+    <ul>
+        <li>List Item</li>
+        <li>List Item</li>
+    </ul>
+</body>
+</html>
+
+If you are using jQuery 1.7 or higher version, jQuery recommends to use on() to perform event delegation instead of delegate(). The above example can be very easily rewritten using on() and off() functions, instead of delegate() and undelegate() functions as shown below. We discussed performing event delegation using on() function in detail in Part 36 of jQuery tutorial.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('ul').on('click', 'li', function () {
+                $(this).fadeOut(500);
+            });
+
+            $('#btnAdd').on('click', function () {
+                $('ul').append('<li>New List Item</li>');
+            });
+
+            $('#btnUndelegate').on('click', function () {
+                $('ul').off('click', 'li');
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <input id="Button10" type="button" value="Add a New List Item" />
+    <input id="btnUndelegate" type="button" value="Undelegate" />
+    <ul>
+        <li>List Item</li>
+        <li>List Item</li>
+    </ul>
+</body>
+</html>
+
+-----------------------------------------------------------------------------------------------------
+
+jQuery live function
+In this video we will discuss jQuery live() and die() functions.
+We discussed how to perform event delegation, using on() method in Part 36 and using delegate() method in Part 37. Another way to perform event delegation is by using live() function.
+
+With on() and delegate() functions the event gets bubbled up to the specified parent element, where as with live() function the event gets bubbled up all the way to the document object.
+
+The example that we worked with in Part 36 and Part 37 is rewritten using live() and die() functions as shown below. Notice that, to perform event delegation we are using live() function and to stop event delegation we are using die() function.
+
+<html>
+<head>
+    <title></title>
+    <!--<script src="jquery-1.11.2.js"></script>-->
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.js">
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('li').live('click', function () {
+                $(this).fadeOut(500);
+            });
+
+            $('#btnAdd').on('click', function () {
+                $('ul').append('<li>New List Item</li>');
+            });
+
+            $('#btnUndelegate').on('click', function () {
+                $('li').die('click');
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <input id="Button11" type="button" value="Add a New List Item" />
+    <input id="Button12" type="button" value="Undelegate" />
+    <ul>
+        <li>List Item</li>
+        <li>List Item</li>
+    </ul>
+</body>
+</html>
+
+live() function is deprecated in jQuery 1.7 and completely removed in jQuery 1.9. Everything that can be achieved with the following methods can be achieved by using .on() function.
+live()
+bind()
+delegate()
+
+So, if you are using jQuery 1.7 or higher version, jQuery recommends to use on() function. 
+
+Please note : Older versions of jQuery can be found on the Microsoft CDN
+http://www.asp.net/ajax/cdn
+
+jquery execute event only once
+In this video we will discuss how to execute event of an element only once. Let us understand this with an example.
+
+Every time you click the button, you will get the JavaScript alert.
+$(document).ready(function () {
+    $('#btn').on('click', function () {
+        alert('Button Clicked');
+    });
+});
+
+If you want to execute the click event handler only once, then you will have to explicitly remove the click event handler. The following example removes the click event handler using off() function, after the alert is displayed.
+
+$(document).ready(function () {
+    $('#btn').on('click', function () {
+        alert('Button Clicked');
+        $(this).off('click');
+    });
+});
+
+jQuery one() function does exactly the same thing. The click event is raised only once. On the first click, JavaScript alert is displayed, but on subsequent clicks nothing happens.
+
+$(document).ready(function () {
+    $('#btn').one('click', function () {
+        alert('Button Clicked');
+    });
+});
+
+The following example binds 3 events(mouseover, mouseout, click) using on() function. If we want all these 3 events to execute only once, then we have to explicitly remove each event after first execution using off() method.
+
+$(document).ready(function () {
+    $('#btn').on({
+        mouseover: function () {
+            $(this).css('background-color', 'yellow');
+            $(this).off('mouseover');
+        },
+        mouseout: function () {
+            $(this).css('background-color', 'white');
+            $(this).off('mouseout');
+        },
+        click: function () {
+            alert('Button clicked');
+            $(this).off('click');
+        }
+    });
+});
+
+The above example can be rewritten using one() function as shown below.
+
+$(document).ready(function () {
+    $('#btn').one({
+        mouseover: function () {
+            $(this).css('background-color', 'yellow');
+        },
+        mouseout: function () {
+            $(this).css('background-color', 'white');
+        },
+        click: function () {
+            alert('Button clicked');
+        }
+    });
+});
+
+one() function executes the handler at most once per element per event type. In the following example, click, mouseover and mouseount events are executed atmost once for each button element.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[type="button"]').one({
+                mouseover: function () {
+                    $(this).css('background-color', 'yellow');
+                },
+                mouseout: function () {
+                    $(this).css('background-color', 'white');
+                },
+                click: function () {
+                    alert('Button clicked');
+                }
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <input type="button" value="Click Me" />
+    <input type="button" value="Click Me" />
+</body>
+</html>
+
+---------------------------------------------------------------------------------------------------------
+
+
+jQuery how to check if event is already bound
+In this video we will discuss, how to check if an event is already bound using jQuery. 
+Why is it important to check if an event is already bound
+To prevent attaching event handler multiple times
+
+The following example checks if a click event handler is already bound. If it's not already bound, then a click event handler is attached.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var jQueryObject = $('#btn');
+            var rawDOMElement = jQueryObject.get(0);
+            var eventObject = $._data(rawDOMElement, 'events');
+
+            if (eventObject != undefined && eventObject.click != undefined) {
+                alert('Click event exists');
+            }
+            else {
+                $('#btn').on('click', function () {
+                    alert('Button Clicked');
+                });
+            }
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <input id="Button13" type="button" value="Click Me" />
+</body>
+</html>
+
+Please note that this only works if you have attached event handlers using jQuery. This will not work if you have attached event handlers using raw JavaScript or element attributes.
+
+Another way to prevent attaching event handlers multiple times is by using jQuery off() and on() methods. The off() method ensures that all existing click event handlers of the button are removed before again adding a new click event handler using on() method.
+
+$('#btn').off('click').on('click', function () {
+    alert('Button Clicked');
+});
+
+--------------------------------------------------------------------------------------------------------
+
+jQuery preventdefault
+
+In this video we will discuss how to prevent browser default action using jQuery. First let's look at some of the browser default actions. For example,
+1. When you right click on a web page, the browser displays the context menu 
+2. When you click on a link, the browser navigates to the page specified in the link
+
+In some situations you may want to prevent these default actions of the browser. For example some of the websites prevent you from right clicking on the page. Disabling right click is annoying users. Many people say they disabled right click for security, because they do not want their content to be copied. But if you disable JavaScript in the browser, you will still be able to right click and copy the content. So you are achieving nothing by disabling right click.  
+
+Having said that, now let us see how to prevent the context menu from appearing when you right click on the web page. We discussed how to achieve this using raw JavaScript in Part 43 of JavaScript Tutorial.
+
+Let us now discuss, how to achieve this using jQuery
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(this).on('contextmenu', function (e) {
+                e.preventDefault();
+                $('#divResult').append('Right click disabled<br/>')
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <h3>
+        Right click disabled on this page. Try
+        to right click and see what happens
+    </h3>
+    <div id="div71"></div>
+</body>
+</html>
+
+When you click on a link, how to prevent the browser from navigating to the page specified in the link.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myHyperLink').on('click', function (e) {
+                e.preventDefault();
+                $('#divResult').append('Hyperlink default action prevented<br/>')
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <a id="myHyperLink" href="http://pragimtech.com">
+        Clicking on the link will not take you to PragimTech
+    </a>
+    <br /><br />
+    <div id="div72"></div>
+</body>
+</html>
+
+----------------------------------------------------------------------------------------------------------
+
+jQuery scroll event
+In this video we will discuss scroll event and how to handle it using jQuery.
+scroll event is raised when the user scrolls to a different place in the element. It applies to window objects, but also to scrollable frames and elements with the overflow CSS property set to scroll.
+
+In the following example, notice that the div element overflow style is set to scroll. The div element has a scroll bar and as you scroll up and down the div element, the scroll event is raised and handled.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('div').scroll(function () {
+                $('h3').css('display', 'inline').fadeOut(1000);
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div style="width:300px; height:200px; border:1px solid black; overflow:scroll">
+        PRAGIM Specialty in training arena unlike other training institutions. Training delivered by real time software experts having more than 10 years of experience. Interview questions and real time scenarios discussion on topics covered for the day. Real time projects discussion relating to the possible interview questions. Trainees can attend training and use lab until you get a job. Resume preparation and mock up interviews. 100% placement assistance. 24 hours lab facility. PRAGIM Technologies offers professional real time projects for students in their final semester. Course completion and project completion certificates will also be provided upon successful completion of the course. We have partnered with major multinational companies to place freshers with our clients on their course completion.
+    </div>
+    <br />
+    <h3 style="display:none; color:red">Scroll event handled</h3>
+</body>
+</html>
+
+The following example, keeps track of how many times the scroll event is raised.
+
+<html>
+<head>
+    <title></title>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var count = 0;
+            $('div').scroll(function () {
+                $('span').text(count += 1);
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div style="width:300px; height:200px; border:1px solid black; overflow:scroll">
+        PRAGIM Speciality in training arena unlike other training institutions. Training delivered by real time software experts having more than 10 years of experience. Interview questions and real time scenarios discussion on topics covered for the day. Realtime projects discussion relating to the possible interview questions. Trainees can attend training and use lab untill you get a job. Resume preperation and mock up interviews. 100% placement assistance. 24 hours lab facility. PRAGIM Technologies offers professional real time projects for studetns in their final semester. Course completion and project completion certificates will also be provided upon successful completion of the course. We have partnered with major multinational companies to place freshers with our clients on their course completion.
+    </div>
+    <br />
+    <h3 style="color:red">Scroll event handled <span>0</span> time(s)</h3>
+</body>
+
+</html>
+
+The following example, keeps track of whether the user scrolled up or down.
+
+<html>
+<head>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var lastScrollTop = 0;
+            $('div').scroll(function () {
+                var currentScrollPosition = $(this).scrollTop();
+                if (currentScrollPosition > lastScrollTop) {
+                    $('h3').text('You scrolled down');
+                } else {
+                    $('h3').text('You scrolled up');
+                }
+                lastScrollTop = currentScrollPosition;
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <div style="width:300px; height:200px; border:1px solid black; overflow:scroll">
+        PRAGIM Speciality in training arena unlike other training institutions. Training delivered by real time software experts having more than 10 years of experience. Interview questions and real time scenarios discussion on topics covered for the day. Realtime projects discussion relating to the possible interview questions. Trainees can attend training and use lab untill you get a job. Resume preperation and mock up interviews. 100% placement assistance. 24 hours lab facility. PRAGIM Technologies offers professional real time projects for studetns in their final semester. Course completion and project completion certificates will also be provided upon successful completion of the course. We have partnered with major multinational companies to place freshers with our clients on their course completion.
+    </div>
+    <br />
+    <h3 style="display:inline; color:red"></h3>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

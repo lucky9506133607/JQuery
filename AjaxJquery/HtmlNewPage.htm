@@ -1,0 +1,1101 @@
+﻿jQuery image gallery
+In this video we will discuss how to create an image gallery with thumbnails using jQuery. We discussed how to do exactly the same thing using raw JavaScript in Part 41 of JavaScript tutorial.
+The image gallery should be as shown in the image below. When you click on the image thumnail, the respective image should be displayed in the main section of the page.
+
+For the purpose of this demo we will be using the images that can be found on any windows machine at the following path.
+C:\Users\Public\Pictures\Sample Pictures
+
+Step 1 : Open Visual Studio and create a new empty asp.net web application project. Name it Demo.
+
+Step 2 : Right click on the Project Name in Solution Explorer in Visual Studio and create a new folder with name = Images.
+
+Step 3 : Copy images from C:\Users\Public\Pictures\Sample Pictures to Images folder in your project.
+
+Step 4 : Right click on the Project Name in Solution Explorer in Visual Studio and add a new HTML Page. It should automatically add HTMLPage1.htm. 
+
+Step 5 : Add a reference to the download jQuery file. I am using jquery-1.11.2.js version for this demo. At this point your solution explorer should look as shown below.
+
+Step 6 : Copy and paste the following HTML and jQuery code in HTMLPage1.htm page.
+
+<html>
+<head>
+    <style type="text/css">
+        .imgStyle {
+            width: 100px;
+            height: 100px;
+            border: 3px solid grey;
+        }
+    </style>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#divId img').on({
+                mouseover: function () {
+                    $(this).css({
+                        'cursor': 'hand',
+                        'border-Color': 'red'
+                    });
+                },
+                mouseout: function () {
+                    $(this).css({
+                        'cursor': 'default',
+                        'border-Color': 'grey'
+                    });
+                },
+                click: function () {
+                    var imageURL = $(this).attr('src');
+                    $('#mainImage').fadeOut(1000, function () {
+                        $(this).attr('src', imageURL);
+                    }).fadeIn(1000);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <img id="mainImage" style="border:3px solid grey"
+         src="/Images/Hydrangeas.jpg" height="500" width="540" />
+    <br />
+    <div id="divId">
+        <img class="imgStyle" src="/Images/Hydrangeas.jpg" />
+        <img class="imgStyle" src="/Images/Jellyfish.jpg" />
+        <img class="imgStyle" src="/Images/Koala.jpg" />
+        <img class="imgStyle" src="/Images/Penguins.jpg" />
+        <img class="imgStyle" src="/Images/Tulips.jpg" />
+    </div>
+</body>
+</html>
+
+In our next video, we will discuss how to make this image gallery a bit more efficient using the concept of event bubbling.
+
+------------------------------------------------------------------------------------------------------
+
+Optimise jQuery image gallery
+In this video we will discuss how to optimise the image gallery we created in Part 43, using the concept of event bubbling. We will also enhance the example, using a dropdownlist for effects and duration. We will also be able to enlarge and shrink the height and width of the main image. Please watch Part 43 from jQuery tutorial before proceeding.
+
+The problem with the image gallery that we created in Part 43 is that we are binding event handlers (mouseover, mouseout & click) to every image element. This means if you have 500 image elements, then there will be 1500 event handlers (mouseover, mouseout & click) in the memory and this may negatively affect the performance of your application. 
+
+A better way of doing the same from a performance standpoint is shown below. In this example, the event handlers are attached to the div element and not to the individual img elements. So, even if you have 500 img elements, there are only 3 event handlers in memory. 
+
+So how does this work
+1. When you click on an img element, the event gets bubbled up to its parent (div) as the img element does not have an event handler 
+2. The bubbled event is handled by the the parent (div) element, as it has a click event handler.
+
+<html>
+<head>
+    <style type="text/css">
+        .imgStyle {
+            width: 100px;
+            height: 100px;
+            border: 3px solid grey;
+        }
+    </style>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#divId').on({
+                mouseover: function () {
+                    $(this).css({
+                        'cursor': 'hand',
+                        'border-Color': 'red'
+                    });
+                },
+                mouseout: function () {
+                    $(this).css({
+                        'cursor': 'default',
+                        'border-Color': 'grey'
+                    });
+                },
+                click: function () {
+                    var imageURL = $(this).attr('src');
+                    var effect = $('#selectImgEffect').val();
+                    var duration = $('#selectImgDuration').val() * 1000;
+
+                    if (effect == 'Slide') {
+                        $('#mainImage').slideUp(duration, function () {
+                            $(this).attr('src', imageURL);
+                        }).slideDown(duration);
+                    }
+                    else {
+                        $('#mainImage').fadeOut(duration, function () {
+                            $(this).attr('src', imageURL);
+                        }).fadeIn(duration);
+                    }
+                }
+            }, 'img');
+
+            var mainImageElement = $('#mainImage');
+            var height = parseInt(mainImageElement.attr('height'));
+            var width = parseInt(mainImageElement.attr('width'))
+
+            $('#btnEnlarge').click(function () {
+                height += 100;
+                width += 100;
+                mainImageElement.animate({ 'height': height, 'width': width });
+            });
+
+            $('#btnShrink').click(function () {
+                height -= 100;
+                width -= 100;
+                mainImageElement.animate({ 'height': height, 'width': width });
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    Select Effect :
+    <select id="selectImgEffect">
+        <option value="Fade">Fade</option>
+        <option value="Slide">Slide</option>
+    </select>
+    Time in seconds:
+    <select id="selectImgDuration">
+        <option value="0.5">0.5</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    <input id="btnEnlarge" type="button" value="Enlarge" />
+    <input id="btnShrink" type="button" value="Shrink" />
+    <br /><br />
+    <img id="Img1" style="border:3px solid grey"
+         src="/Images/Hydrangeas.jpg" height="500" width="540" />
+    <br />
+    <div id="div1">
+        <img class="imgStyle" src="/Images/Hydrangeas.jpg" />
+        <img class="imgStyle" src="/Images/Jellyfish.jpg" />
+        <img class="imgStyle" src="/Images/Koala.jpg" />
+        <img class="imgStyle" src="/Images/Penguins.jpg" />
+        <img class="imgStyle" src="/Images/Tulips.jpg" />
+    </div>
+</body>
+</html>
+
+-------------------------------------------------------------------------------------------------------
+
+jquery image slideshow with thumbnails
+In this video, we will discuss creating a simple image slideshow using jQuery. We will be using setInterval() and clearInterval() JavaScript methods to achieve this. We discussed these functions in detail in Part 34 of JavaScript Tutorial.
+The slideshow should be as shown in the image below. When you click "Start Slide Show" button the image slideshow should start and when you click the "Stop Slide Show" button the image slideshow should stop.
+
+For the purpose of this demo we will be using the images that can be found on any windows machine at the following path.
+C:\Users\Public\Pictures\Sample Pictures
+
+Here are the steps to create the image slideshow using jQuery
+
+Step 1 : Open Visual Studio and create a new empty asp.net web application project. Name it Demo.
+
+Step 2 : Right click on the Project Name in Solution Explorer in Visual Studio and create a new folder with name = Images.
+
+Step 3 : Copy the images from C:\Users\Public\Pictures\Sample Pictures to Images folder in your project. 
+
+Step 4 : Right click on the Project Name in Solution Explorer in Visual Studio and add a new HTML Page. It should automatically add HTMLPage1.htm. Also add a jQuery file. At this point your solution explorer should look as shown below. 
+
+Step 5 : Copy and paste the following HTML and jQuery code in HTMLPage1.htm page.
+
+<html>
+<head>
+    <style type="text/css">
+        .imgStyle {
+            width: 100px;
+            height: 100px;
+            border: 3px solid grey;
+        }
+    </style>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var imageURLs = new Array();
+            var intervalId;
+            var btnStart = $('#btnStartSlideShow');
+            var btnStop = $('#btnStopSlideShow');
+
+            $('#divId img').each(function () {
+                imageURLs.push($(this).attr('src'));
+            });
+
+            function setImage() {
+                var mainImageElement = $('#mainImage');
+                var currentImageURL = mainImageElement.attr('src');
+                var currentImageIndex = $.inArray(currentImageURL, imageURLs);
+                if (currentImageIndex == (imageURLs.length - 1)) {
+                    currentImageIndex = -1;
+                }
+
+                mainImageElement.attr('src', imageURLs[currentImageIndex + 1])
+            }
+
+            btnStart.click(function () {
+                intervalId = setInterval(setImage, 500);
+                $(this).attr('disabled', 'disabled');
+                btnStop.removeAttr('disabled');
+            });
+
+            btnStop.click(function () {
+                clearInterval(intervalId);
+                $(this).attr('disabled', 'disabled');
+                btnStart.removeAttr('disabled');
+            }).attr('disabled', 'disabled');
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <input id="btnStartSlideShow" type="button" value="Start Slideshow" />
+    <input id="btnStopSlideShow" type="button" value="Stop Slideshow" />
+    <br /><br />
+    <img id="Img2" style="border:3px solid grey"
+         src="/Images/Hydrangeas.jpg" height="500" width="540" />
+    <br />
+    <div id="div2">
+        <img class="imgStyle" src="/Images/Hydrangeas.jpg" />
+        <img class="imgStyle" src="/Images/Jellyfish.jpg" />
+        <img class="imgStyle" src="/Images/Koala.jpg" />
+        <img class="imgStyle" src="/Images/Penguins.jpg" />
+        <img class="imgStyle" src="/Images/Tulips.jpg" />
+    </div>
+</body>
+</html>
+
+----------------------------------------------------------------------------------------------
+
+jquery animate function
+jQuery animate function let's us animate CSS properties.
+
+The following example animates the div element, while changing the font-size property of the div element from its initial size to 50 pixels over a period of 2000 milli-seconds (2 seconds).
+
+<html>
+<head>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myButton').click(function () {
+                $('#myDiv').animate({ 'font-size': '50' }, 2000);
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <input type="button" id="myButton" value="Animate" />
+    <br /><br />
+    <div id="myDiv">
+        jQuery animate function
+    </div>
+</body>
+</html>
+
+Syntax of jquery animate function
+.animate( properties [, duration ] [, easing ] [, complete ] )
+
+Animate function has 4 parameters. Only the first parameter (properties) is the required parameter. Rest 3 are optional.
+
+Parameter	Description
+properties	An object of CSS properties and values
+duration	The duration for animation in milliseconds. Default is 400.
+easing	Easing function to use for the transition. Default is swing. You could also use linear.
+complete	A function to call once the animation is complete
+
+What is jQuery easing
+Easing is a technique where the speed and/or direction of animation are changed while the animation is in progress. Easing can make the animation start off slow and gradually speed up, start up fast and gradually slow down, and a whole host of other effects. The difference between linear and swing easing is very subtle.
+
+The following page shows all the easings provided by jQuery UI
+https://jqueryui.com/easing
+
+The following example increases the height and width of the image to 400 pixels on mouseover. On mouseout the height and width are reduced to 100 pixels.
+
+<html>
+<head>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myImage').on({
+                mouseover: function () {
+                    $(this).animate({
+                        'height': 400,
+                        'width': 400,
+                    }, 3000);
+                },
+                mouseout: function () {
+                    $(this).animate({
+                        'height': 100,
+                        'width': 100,
+                    }, 3000);
+                }
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <img id="myImage" height="100" width="100" src="/Images/Tulips.jpg" />
+</body>
+</html>
+
+In the following example, several calls to animate() method are chained together. By default these calls are placed into a queue to be executed one after the other in series rather than executing all of them simultaneously in parallel.
+
+<html>
+<head>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myImage').click(function () {
+                $(this)
+                    .animate({ 'left': '300' })
+                    .animate({ 'top': '200' })
+                    .animate({ 'left': '10' })
+                    .animate({ 'top': '10' });
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <img id="myImage" height="100" width="100" style="position:absolute"
+         src="/Images/Tulips.jpg" />
+</body>
+</html>
+
+Please note: By default, all HTML elements have a static position, and cannot be moved. To modify the position , set the CSS position property of the element to fixed, absolute or relative.
+
+---------------------------------------------------------------------------------------------------
+
+jquery animation queue
+In this video we will discuss how jQuery animation queues work.
+
+When several calls to animate() method are chained together. By default these calls are placed into a queue to be executed one after the other in series rather than executing all of them simultaneously in parallel. The name of this queue is fx.
+
+Each HTML element has its own queue. With the following code there will be 5 calls to animate method placed in the queue of each div element. This means both div elements (myDiv1 & myDiv2) may start to execute the first call to animate method more or less at the same time. However, from the given queue the queued methods are executed one after the other in series.
+
+<html>
+<head>
+    <style>
+        .myDivClass {
+            width: 150px;
+            padding: 5px;
+            font-size: 18px;
+            border: 1px solid black;
+            opacity: .4;
+            background-color: red;
+            color: white;
+        }
+    </style>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myButton').click(function () {
+                $('#myDiv1')
+                    .animate({ 'width': 500 }, 1500)
+                    .animate({ 'padding': 20 }, 1500)
+                    .animate({ 'font-size': 50 }, 1500)
+                    .animate({ 'border-width': 10 }, 1500)
+                    .animate({ 'opacity': 1 }, 1500);
+
+                $('#myDiv2')
+                    .animate({ 'width': 500 }, 1500)
+                    .animate({ 'padding': 20 }, 1500)
+                    .animate({ 'font-size': 50 }, 1500)
+                    .animate({ 'border-width': 10 }, 1500)
+                    .animate({ 'opacity': 1 }, 1500);
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <input type="button" id="Button1" value="Start Animation" />
+    <br /><br />
+    <div id="myDiv1" class="myDivClass">
+        jQuery animations
+    </div>
+    <br />
+    <div id="myDiv2" class="myDivClass">
+        Pragim Tech
+    </div>
+</body>
+</html>
+
+The following code finds the total number of method calls waiting in the queue. While the first call to animate method is being executed, the other calls are added to the queue and waiting to be executed one after the other in sequence.
+
+$('#myDiv1')
+    .animate({ 'width': 500 }, 1500)
+    .queue(function () {
+        console.log('Queued calls = ' +
+            $(this).queue('fx').length); $(this).dequeue();
+    })
+    .animate({ 'padding': 20 }, 1500)
+    .animate({ 'font-size': 50 }, 1500)
+    .animate({ 'border-width': 10 }, 1500)
+    .animate({ 'opacity': 1 }, 1500)
+    .queue(function () {
+        console.log('Queued calls = ' +
+            $(this).queue('fx').length); $(this).dequeue();
+    });
+
+To globally disable all animations
+$.fx.off = true or jQuery.fx.off = true
+
+The following example toggles animation on and off
+<html>
+<head>
+    <style>
+        .myDivClass {
+            width: 150px;
+            padding: 5px;
+            font-size: 18px;
+            border: 1px solid black;
+            opacity: .4;
+            background-color: red;
+            color: white;
+        }
+    </style>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myButton').click(function () {
+                jQuery.fx.off = $('#chkBox').is(':checked');
+
+                $('#myDiv1')
+                    .animate({ 'width': 500 }, 1500)
+                    .animate({ 'padding': 20 }, 1500)
+                    .animate({ 'font-size': 50 }, 1500)
+                    .animate({ 'border-width': 10 }, 1500)
+                    .animate({ 'opacity': 1 }, 1500)
+
+                $('#myDiv2')
+                    .animate({ 'width': 500 }, 1500)
+                    .animate({ 'padding': 20 }, 1500)
+                    .animate({ 'font-size': 50 }, 1500)
+                    .animate({ 'border-width': 10 }, 1500)
+                    .animate({ 'opacity': 1 }, 1500);
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <input type="button" id="Button2" value="Start Animation" />
+    <input id="chkBox" type="checkbox" /> Turn off animations
+    <br /><br />
+    <div id="myDiv1" class="myDivClass">
+        jQuery animations
+    </div>
+    <br />
+    <div id="myDiv2" class="myDivClass">
+        Pragim Tech
+    </div>
+</body>
+</html>
+
+If you want the calls to animate() to be executed simultaneously in parallel, then set queue option to false. Modify the jQuery code as shown below.
+
+$('#myDiv1')
+    .animate({ 'width': 500 }, { duration: 1500, queue: false })
+    .animate({ 'padding': 20 }, { duration: 1500, queue: false })
+    .animate({ 'font-size': 50 }, { duration: 1500, queue: false })
+
+ 
+    .animate({ 'border-width': 10 }, { duration: 1500, queue: false })
+    .animate({ 'opacity': 1 }, { duration: 1500, queue: false });
+
+$('#myDiv2')
+    .animate({ 'width': 500 }, { duration: 1500, queue: false })
+    .animate({ 'padding': 20 }, { duration: 1500, queue: false })
+    .animate({ 'font-size': 50 }, { duration: 1500, queue: false })
+    .animate({ 'border-width': 10 }, { duration: 1500, queue: false })
+    .animate({ 'opacity': 1 }, { duration: 1500, queue: false });
+
+There are 2 variations of animate method. We discussed Variation 1 in Part 46 of jQuery tutorial. In the code snippet above we are using Variation 2. 
+
+Variation 1
+.animate( properties [, duration ] [, easing ] [, complete ] )
+
+Variation 2
+.animate( properties, options )
+
+For the list of all additional options that you can pass to animate method please check http://api.jquery.com/animate
+
+An easier way to animate multiple css properties simultaneously in parallel, is to include all those css properties in a single JSON object.
+
+$('#myDiv1')
+    .animate({
+        'width': 500,
+        'padding': 20,
+        'font-size': 50,
+        'border-width': 10,
+        'opacity': 1
+    }, 1500);
+
+$('#myDiv2')
+    .animate({
+        'width': 500,
+        'padding': 20,
+        'font-size': 50,
+        'border-width': 10,
+        'opacity': 1
+    }, 1500);
+
+---------------------------------------------------------------------------------------------------
+
+Simple jquery progress bar
+In this video we will discuss how to create a simple animated jquery progress bar using animate() function.
+<html>
+<head>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myButton').click(function () {
+                animateProgressBar($('#ddlPercentage').val());
+            });
+
+            function animateProgressBar(percentageCompleted) {
+                $('#innerDiv').animate({
+                    'width': (500 * percentageCompleted) / 100
+                }, 3000);
+
+                $({ counter: 1 }).animate({ counter: percentageCompleted }, {
+                    duration: 3000,
+                    step: function () {
+                        $('#innerDiv').text(Math.ceil(this.counter) + ' %');
+                    }
+                })
+            }
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    Select Percentage :
+    <select id="ddlPercentage">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50">50</option>
+        <option value="60">60</option>
+        <option value="70">70</option>
+        <option value="80">80</option>
+        <option value="90">90</option>
+        <option value="100">100</option>
+    </select>
+    <input type="button" id="Button3" value="Start Animation" />
+    <br /><br />
+    <div id="outerDiv" style="background-color:#EEEEEE;
+         height:20px; width:500px; padding:5px">
+        <div id="innerDiv" style="background-color:red; height:19px;
+             width:0px; color:white; text-align:center">
+        </div>
+    </div>
+</body>
+</html>
+
+-------------------------------------------------------------------------------------------------------
+
+optimize jquery progress bar
+In this video we will discuss how to enhance and optimize the jquery progress bar that we created in Part 48 of jQuery tutorial.
+
+At the moment the progress bar always counts from 1. For example
+1. When you select 30%, it starts to count from 1 to 30 which is good.
+2. Now if you select 70%, it starts again from 1 and counts all the way till 70, instead of continuing to count from 30 to 70.
+
+The following code counts from the previous point. For example
+1. If you select 30% first, it starts to count from 1 to 30. Now if you select 90, it counts from 30 to 90.
+2. At this point, if you select 20%, it counts down from 90 to 20.
+
+$(document).ready(function () {
+    var currentPercentage = 0;
+    var previousPercenage = 0;
+
+    $('#myButton').click(function () {
+        previousPercenage = currentPercentage;
+        currentPercentage = $('#ddlPercent').val();
+        animateProgressBar(previousPercenage, currentPercentage);
+    });
+
+    function animateProgressBar(previousPercenage, currentPercentage) {
+        $('#innerDiv').animate({
+            'width': (500 * currentPercentage) / 100
+        }, 2000);
+
+        if (previousPercenage > currentPercentage)
+            currentPercentage = currentPercentage - 1;
+
+        $({ counter: previousPercenage }).animate({ counter: currentPercentage }, {
+            duration: 2000,
+            step: function () {
+                $('#innerDiv').text(Math.ceil(this.counter) + ' %');
+            }
+        });
+    }
+});
+
+The above code can be optimized as shown below. This optimization is suggested by Aptem A, one of our YouTube subscribers. This is great, thanks to him for his valuable contribution.
+
+$(document).ready(function () {
+    $('#myButton').click(function () {
+        animateProgressBar($('#ddlPercent').val());
+    });
+
+    function animateProgressBar(currentPercentage) {
+        $("#innerDiv").animate({ "width": (currentPercentage * 500) / 100 }, {
+            duration: 3000,
+            step: function (now, fx) {
+                $("#innerDiv").text(Math.ceil((now / 500) * 100) + ' %');
+            }
+        });
+    }
+});
+
+step option of the animate function can be used to define a function that gets called after each step of the animation. This method has 2 parameters - now & tween.
+
+now	contains the value being animated
+tween	is a complex object and contains several properties. A few are listed below. For the complete list set a break point and inspect the object
+
+elem	The DOM element being animated
+now	The value the animation is currently at
+end	The value the animation will end at
+
+jQuery animate method documentation
+http://api.jquery.com/animate/
+
+----------------------------------------------------------------------------------------------------
+
+jquery show hide password
+In this video we will discuss how to toggle password visibility using show / hide password checkbox.
+
+Here is what we want to achieve
+1. When Show password checkbox IS NOT CHECKED, the password should be masked
+2. When Show password checkbox IS CHECKED, the password should be in clear text and visible to the user
+
+One of the simplest ways of achieving this is by changing the type attribute of the password field depending on the checked status of Show password checkbox
+1. If the Show password checkbox is CHECKED change the type to text
+2. If the Show password checkbox is NOT CHECKED change the type to password
+
+The following is the HTML and jQuery code
+<html>
+<head>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#cbShowPassword').click(function () {
+                $('#txtPassword').attr('type', $(this).is(':checked') ? 'text' : 'password');
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    Password :
+    <input type="password" id="txtPassword" />
+    <input type="checkbox" id="cbShowPassword" />Show password
+</body>
+</html>
+
+The problem with the above approach is that it does not work in IE 8 and earlier versions. This is because with IE8 and earlier versions the type attribute of input elements cannot be changed once set. The following code works in all browsers including IE8 and earlier versions. 
+
+When Show password checkbox is clicked
+1. Retrieve the value the from the password textbox and store it in a variable for later use.
+2. Delete the password input filed. 
+3. If the "Show password" checkbox is CHECKED, then add a new input filed of type text, else add a new input filed of password. In both the cases set the value attribute of the input element = the variable created in Step 1.
+
+<html>
+<head>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#cbShowPassword').click(function () {
+                var currentPassowrdFiled = $('#txtPassword');
+                var currentPassword = currentPassowrdFiled.val();
+                currentPassowrdFiled.remove();
+
+                if ($(this).is(':checked')) {
+                    $(this).before('<input type="text" id="txtPassword" value="'
+                        + currentPassword + '">');
+                }
+                else {
+                    $(this).before('<input type="password" id="txtPassword" value="'
+                        + currentPassword + '">');
+                }
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    Password :
+    <input type="password" id="txtPassword" />
+    <input type="checkbox" id="cbShowPassword" />Show password
+</body>
+</html>
+
+--------------------------------------------------------------------------------------------------
+
+Increase decrease font size using jquery
+In this video we will discuss how to increase, decrease and reset font size using jQuery.
+
+<html>
+<head>
+    <style>
+        .divClass {
+            font-size: 16px;
+            background-color: #E3E3E3;
+            width: 500px;
+            padding: 5px;
+        }
+    </style>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#linkIncrease').click(function () {
+                modifyFontSize('increase');
+            });
+
+            $('#linkDecrease').click(function () {
+                modifyFontSize('decrease');
+            });
+
+            $('#linkReset').click(function () {
+                modifyFontSize('reset');
+            })
+
+            function modifyFontSize(flag) {
+                var divElement = $('#divContent');
+                var currentFontSize = parseInt(divElement.css('font-size'));
+
+                if (flag == 'increase')
+                    currentFontSize += 3;
+                else if (flag == 'decrease')
+                    currentFontSize -= 3;
+                else
+                    currentFontSize = 16;
+
+                divElement.css('font-size', currentFontSize);
+            }
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    Font-Size:
+    <a id="linkIncrease" href="#">Increase</a>
+    <a id="linkDecrease" href="#">Decrease</a>
+    <a id="linkReset" href="#">Reset</a>
+    <br /><br />
+    <div id="divContent" class="divClass">
+        <b>jQuery Tutorial</b>
+        <ul>
+            <li>What is jQuery</li>
+            <li>What is $(document).ready(function() in jquery</li>
+            <li>Benefits of using CDN</li>
+            <li>#id selector</li>
+            <li>Element Selector</li>
+            <li>class selector</li>
+            <li>attribute selector</li>
+            <li>attribute value selectors</li>
+            <li>case insensitive attribute selector</li>
+            <li>jQuery input vs :input</li>
+        </ul>
+    </div>
+</body>
+</html>
+
+----------------------------------------------------------------------------------------------
+
+jquery floating div
+In this video we will discuss, how to create floating div using jQuery.
+We want the div element in the sidebar to be floating and always visible as we scroll down the page.
+
+Example : In this example we are using position() and scrollTop() functions. The object returned by position() function has top and left properties, which can be used to know the current top and left positions (coordinates). We are using this function to find the top position of the div element that we want to keep floating as we scroll down. To get the current vertical position of the scroll bar, we are using scrollTop() function. 
+
+As we scroll and when the current vertical position of the scroll bar becomes GREATER THAN the top position of the div element, then we want the div element to start floating. To do this set position style to fixed. A fixed position element is positioned relative to the browser window. So as you scroll down it will be floating in the browser window.
+
+If the current vertical position of the scroll bar becomes LESS THAN the top position of the div element, then we don't want the div element to float, so we set position style to relative. A relative position element is positioned relative to itself. So if you set position to relative and top to 0, it will continue to stay where it is without floating.
+
+<html>
+<head>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var floatingDiv = $("#divfloating");
+            var floatingDivPosition = floatingDiv.position();
+            $(window).scroll(function () {
+                var scrollPosition = $(window).scrollTop();
+                if (scrollPosition >= floatingDivPosition.top) {
+                    floatingDiv.css({
+                        'position': 'fixed',
+                        'top': 3
+                    });
+                } else {
+                    floatingDiv.css({
+                        'position': 'relative',
+                        'top': 0
+                    });
+                }
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial;">
+    <table align="center" border="1" style="border-collapse:collapse">
+        <tr>
+            <td style="width:500px">
+                Main Page Content
+            </td>
+            <td style="width:150px; vertical-align:top">
+                Side panel content
+                <br /><br />
+                <div id="divfloating" style="background-color:silver;
+                                             width:150px; height:150px">
+                    Floating Div - Keeps floating as you scroll down the page
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+
+---------------------------------------------------------------------------------------------------
+
+jquery ajax load
+In this video we will discuss how to load HTML data from the server using jquery AJAX load function.
+What is AJAX
+AJAX stands for Asynchronous JavaScript and XML, and allow parts of the page to be updated without having to reload the entire page. 
+
+Syntax 
+load( url [, data ] [, complete ] )
+Parameter	Description
+url	Required. URL to which the request is sent
+data	Optional. A JSON object or string that is sent to the server along with the request
+complete	A callback function that is called when the request completes
+
+The following example loads HTML data from the server. When a text box receives focus, the help text associated with that field is loaded from the server and displayed. When the focus is lost the help text disappears.
+
+HtmlPage1.html
+<html>
+<head>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var textBoxes = $('input[type="text"]');
+            textBoxes.focus(function () {
+                var helpDiv = $(this).attr('id') + 'HelpDiv';
+                $('#' + helpDiv).load('Help.html #' + helpDiv);
+            });
+
+            textBoxes.blur(function () {
+                var helpDiv = $(this).attr('id') + 'HelpDiv';
+                $('#' + helpDiv).html('');
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <table>
+        <tr>
+            <td>First Name</td>
+            <td><input id="firstName" type="text" /></td>
+            <td><div id="firstNameHelpDiv"></div></td>
+        </tr>
+        <tr>
+            <td>Last Name</td>
+            <td><input id="lastName" type="text" /></td>
+            <td><div id="lastNameHelpDiv"></div></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td><input id="email" type="text" /></td>
+            <td><div id="emailHelpDiv"></div></td>
+        </tr>
+        <tr>
+            <td>Income</td>
+            <td><input id="income" type="text" /></td>
+            <td><div id="incomeHelpDiv"></div></td>
+        </tr>
+    </table>
+</body>
+</html>
+
+Help.html
+<div id="firstNameHelpDiv">
+    Your fisrt name as it appears in passport
+</div>
+
+<div id="lastNameHelpDiv">
+    Your last name as it appears in passport
+</div>
+
+<div id="emailHelpDiv">
+    Your email address for communication
+</div>
+
+<div id="incomeHelpDiv">
+    Your annual income
+</div>
+
+-----------------------------------------------------------------------------------------------
+
+jquery ajax load aspx page
+In this video we will discuss how to load HTML data from the server from an aspx page using load function. This is continuation to Part 53. Please watch Part 53 from jQuery tutorial before proceeding.
+
+When a text box receives focus, the help text associated with that field should be loaded from the server and displayed. When the focus is lost the help text disappears. The help text is stored in the database.
+
+We will be using the jquery ajax load function to achieve this. Here is how this is going to work
+1. The ASPX page loads data from the SQL Server database using ADO.NET and C#
+2. The HTML page loads HTML data from the ASPX page using jQuery AJAX load function
+
+
+Step 1 : Create SQL Server table and insert helptext data
+
+Create table tblHelpText
+(
+     HelpTextKey nvarchar(50) primary key,
+     HelpText nvarchar(250)
+)
+GO
+
+Insert into tblHelpText values
+('firstName','Your fisrt name as it appears in passport')
+Insert into tblHelpText values
+('lastName','Your last name as it appears in passport')
+Insert into tblHelpText values
+('email','Your email address for communication')
+Insert into tblHelpText values
+('income','Your annual income')
+
+Step 2 : Create stored procedure that the ASPX page will call to get helptext data from the database
+
+Create procedure spGetHelpTextByKey
+@HelpTextKey nvarchar(50)
+as
+Begin
+     Select HelpText from tblHelpText where HelpTextKey=@HelpTextKey
+End
+
+Step 3 : Create new asp.net web application project. Name it Demo. 
+
+Step 4 : Include a connection string in the web.config file to your database.
+<add name="DBCS"
+      connectionString="server=.;database=SampleDB;integrated security=SSPI" />
+
+Step 5 : Add a new WebForm. Name it GetHelpText.aspx. Copy and paste the following HTML in the WebForm.
+
+<%@ Page Language="C#" AutoEventWireup="true"
+         CodeBehind="GetHelpText.aspx.cs" Inherits="Demo.GetHelpText" %>
+<div id="divResult" runat="server"></div>
+
+Step 6 : Copy and paste the followng code in the code-behind file
+
+using System;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace Demo
+{
+    public partial class GetHelpText : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            string helpTextKey = Request["HelpTextKey"];
+            divResult.InnerText = GetHelpTextByKey(helpTextKey);
+        }
+
+        private string GetHelpTextByKey(string key)
+        {
+            string helpText = string.Empty;
+
+            string cs = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand("spGetHelpTextByKey", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter parameter = new SqlParameter("@HelpTextKey", key);
+                cmd.Parameters.Add(parameter);
+                con.Open();
+                helpText = cmd.ExecuteScalar().ToString();
+            }
+
+            return helpText;
+        }
+    }
+}
+
+Step 7 : Add an HTML page to the ASP.NET project. Copy and paste the following HTML and jQuery code
+<html>
+<head>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var textBoxes = $('input[type="text"]');
+            textBoxes.focus(function () {
+                var helpDiv = $(this).attr('id');
+                $('#' + helpDiv + 'HelpDiv').load('GetHelpText.aspx', { HelpTextKey: helpDiv });
+            });
+
+            textBoxes.blur(function () {
+                var helpDiv = $(this).attr('id') + 'HelpDiv';
+                $('#' + helpDiv).html('');
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+    <table>
+        <tr>
+            <td>First Name</td>
+            <td><input id="firstName" type="text" /></td>
+            <td><div id="firstNameHelpDiv"></div></td>
+        </tr>
+        <tr>
+            <td>Last Name</td>
+            <td><input id="lastName" type="text" /></td>
+            <td><div id="lastNameHelpDiv"></div></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td><input id="email" type="text" /></td>
+            <td><div id="emailHelpDiv"></div></td>
+        </tr>
+        <tr>
+            <td>Income</td>
+            <td><input id="income" type="text" /></td>
+            <td><div id="incomeHelpDiv"></div></td>
+        </tr>
+    </table>
+</body>
+</html>
+
+
+                    
+                    |html Page| <------- |ASPX Page| <------------|SQL Server Database|
+
+                            html page loads data      Aspx page loads data from database
+                            from aspx page using        using ado.net & c#
+                            jquery ajax load
+
+----------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
