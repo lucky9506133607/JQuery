@@ -599,23 +599,23 @@ The following code counts from the previous point. For example
 
 $(document).ready(function () {
     var currentPercentage = 0;
-    var previousPercenage = 0;
+    var previousPercentage = 0;
 
     $('#myButton').click(function () {
-        previousPercenage = currentPercentage;
+        previousPercentage = currentPercentage;
         currentPercentage = $('#ddlPercent').val();
-        animateProgressBar(previousPercenage, currentPercentage);
+        animateProgressBar(previousPercentage, currentPercentage);
     });
 
-    function animateProgressBar(previousPercenage, currentPercentage) {
+    function animateProgressBar(previousPercentage, currentPercentage) {
         $('#innerDiv').animate({
             'width': (500 * currentPercentage) / 100
         }, 2000);
 
-        if (previousPercenage > currentPercentage)
+        if (previousPercentage > currentPercentage)
             currentPercentage = currentPercentage - 1;
 
-        $({ counter: previousPercenage }).animate({ counter: currentPercentage }, {
+        $({ counter: previousPercentage }).animate({ counter: currentPercentage }, {
             duration: 2000,
             step: function () {
                 $('#innerDiv').text(Math.ceil(this.counter) + ' %');
