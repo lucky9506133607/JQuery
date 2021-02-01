@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            show_data();
+            $('#btn_save').click(function () {
+                var name = document.getElementById("txt_Name");
+                var phone = document.getElementById("txt_Phone");
+                var email = document.getElementById("txt_Email");
+                var address = document.getElementById("txt_Address");
+                if (name.value == "" || phone.value == "" || email.value == "" || address.value == "") {
+                    alert("please enter all the fields");
+                    return false;
+                };
+                $.ajax({
+                    url: 'InsertService.asmx/savedata',
+                    data: { name: name.value, phone: phone.value, email: email.value, address: address.value },    //"{'name:'" + name.value + "','phone':'" + phone.value + "','email':'" + email.value + "','address':'" + address.value + "'}",
+                    method: "POST",
+                    datatype: "XML",
+                    success: function (data) {
+                        //  show_data();
+                        alert("submit successfully");
+                        // ClearField();
+                    }
+
+                });
+            });
+        });
+        function show_data() { 
+        $.ajax({
+        type: "POST",
+        ContentType: "application/json",
+        url: "InsertService.asmx/showdata"
+        data: {id:nd},
+        datatype: "Json",
+        success: function(data){
+        if(data.d.length>0)
+        {
+        $('#dd').html('');
+        $('#dd').append('<thead><tr><th width="30px"><input id="chk_all" onclick="return check_all()" type="checkbox"/></th><th>Name</th><th width="80px">Phone</th><th width="80px">Email</th><th width="80px">Address</th></tr></thead>')
+        for (var l=0; l<data.d.length; l++)
+        {
+        var list = ['<tr><td><input id="chk_all" name="c" aid=' + data.d[l].id + 'type="checkbox"/></td><td>' + data.d[l].name + '</td><td>' + data.d[l].phone + '</td><td>' + data.d[l].email + '</td><td>'+data.d[l].address + '</td></tr>']
+        $('#dd').append(list);
+        }
+        $("count").html("Record Found :" + data.d.length);
+        }
+        else
+        {
+        $('#dd').append("<tr><counter><font color='red'>Data not available </font></counter></tr>").show();
+        }
+        }
+        });
+        $('#loader').hide();
+        };
+    
+    </script>
+</head>
+<body>
+<table style="width: 100%;">
+            <tr>
+                <td>
+                    &nbsp;
+                    Name</td>
+                <td>
+                    &nbsp;
+                    <input id="txt_Name" type="text" /></td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;
+                    Phone NO</td>
+                <td>
+                    &nbsp;
+                    <input id="txt_Phone" type="text" /></td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;
+                    Email</td>             
+                <td>
+                    &nbsp;
+                    <input id="txt_Email" type="text" /></td>
+            </tr>
+             <tr>
+                <td>
+                    &nbsp;
+                    Address</td>             
+                <td>
+                    &nbsp;
+                    <input id="txt_Address" type="text" /></td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;
+                   </td>             
+                <td>
+                    &nbsp;
+                    <input id="btn_save" type="button" value="Submit" /> 
+                    </td>
+            </tr>
+        </table>
+        <table>
+        <thead>
+        <tr>
+        <td>SID</td>
+        <td>Name</td>
+        <td>Phone</td>
+        <td>Email</td>
+        <td>Address</td>
+        <td>Edit</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>SID</td>
+        <td>Name</td>
+        <td>Phone</td>
+        <td>Email</td>
+        <td>Address</td>
+        <td>Edit</td>
+        </tr>
+
+        </tbody>
+        </table>
+</body>
+</html>
