@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnSave").click(function () {
+
+                var Fname = $("#FirstName").val(); // FName as per name of Employee Class  
+                var Lname = $("#Surname").val();
+                var MName = $("#MiddleName").val();
+                var Gender = $('input[type="radio"]:checked').val();
+                var Email = $("#EmailId").val();
+                var Dob = $("#Dob").val();
+                var MaritalStatus = $("#MaritalStatus").val();
+                var Hobbies = $("#Hobbies").val();
+                var HomeMobile = $("#TelephoneNo").val();
+                var OfficeMobile = $("#MobileNo").val();
+                var Address = $("#ResidentialAddress").val();
+                var Pincode = $("#PinCode").val();
+                var State = $("#State").val();
+                var Nationality = $("#Nationality").val();
+                var Doj = $("#Doj").val();
+                var CreatedDateTime = new Date();
+                var ModifiedDateTime = new Date();
+                $.ajax({
+                    url: 'UserService.asmx/savedata',
+                    method: 'POST',
+                    data: { Fname: Fname, Mname: MName, Lname: Lname, Gender: Gender, Email: Email, MaritulStatus: MaritalStatus, Hobbies: Hobbies, TelePhone: HomeMobile, Mobile: OfficeMobile, Address: Address, PinCode: Pincode, State: State, Nationality: Nationality }, //objEmployee is the object of Employee Class defined in .cs  
+                    dataType: "XML",
+                    success: function () {
+                        alert("User has been added successfully.");
+                        //getDetails(); //This method is to bind the added data into my HTML Table through Ajax call instead of page load  
+                        // window.location.reload(); we can also use this to load window to show updated data  
+                    }
+                });
+            });
+        });
+        </script>
+</head>
+<body>
+<div class="col-lg-8">  
+    <div class="panel panel-primary">  
+        <div class="panel-heading">  
+            <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i>Employee Details </h3>  
+        </div>  
+        <div class="panel-body">  
+            <div class="form-group col-lg-4">  
+                <label>First Name</label>  
+                <input type="text" name="FirstName" id="FirstName" class="form-control" placeholder="First Name" required="" />  
+            </div>  
+            <div class="form-group col-lg-4">  
+                <label>Middle Name</label>  
+                <input type="text" name="MiddleName" id="MiddleName" class="form-control" placeholder="Kumar" required="" />  
+            </div>  
+            <div class="form-group col-lg-4 ">  
+                <label>Surname</label>  
+                <input type="text" name="Surname" id="Surname" class="form-control" placeholder="Gupta" required="" />  
+            </div>  
+            <div class="clearfix">
+               <input type="radio" name="gender" value="Male">Male
+               <input type="radio" name="gender" value="Female">Female            
+               </div>  
+            <div class="form-group col-lg-6">  
+                <label>Email ID</label>  
+                <input type="email" name="EmailId" id="EmailId" class="form-control" placeholder="abc@someone.com" required="" />  
+            </div>  
+            <div class="form-group col-lg-6">  
+                <label>Date of Birth </label>  
+                <input type="date" name="Dob" id="Dob" class="form-control datepicker" required="" />  
+            </div>  
+            <div class="form-group col-lg-6">  
+                <label>MaritalStatus</label>  
+                <select name="MaritalStatus" id="MaritalStatus" class="form-control" required="">  
+                    <option value="" disabled="disabled">-- Select -- </option>  
+                    <option value="Single">Single</option>  
+                    <option value="Married">Married</option>  
+                </select>  
+            </div>  
+            <div class="form-group col-lg-6">  
+                <label>Hobbies</label>  
+                <input type="text" name="Hobbies" id="Hobbies" class="form-control" placeholder="Football, Cricket etc." />  
+            </div>  
+  
+            <div class="form-group col-lg-6">  
+                <label>Home Telephone</label>  
+                <input type="text" name="TelephoneNo" id="TelephoneNo" class="form-control" placeholder="1234567890" />  
+            </div>  
+  
+            <div class="form-group col-lg-6">  
+                <label>Mobile</label>  
+                <input type="tel" name="MobileNo" id="MobileNo" class="form-control" required="" placeholder="0987654321" />  
+            </div>  
+            <div class="form-group col-lg-12">  
+                <label>Residential Address</label>  
+                <textarea rows="2" name="ResidentialAddress" id="ResidentialAddress" class="form-control" required=""> </textarea>  
+                    <div class="form-group col-lg-6 ">  
+                        <label>Pin Code</label>  
+                        <input name="PinCode" id="PinCode" class="form-control" placeholder="999999" type="text"/>
+                    </div>  
+  
+                    <div class="form-group col-lg-6">  
+                        <label>State</label>  
+                        <select name="State" id="State" class="form-control" required="">  
+                            <option value="" disabled="disabled">-- Select -- </option>  
+                            <option value="Maharashtra">Maharastra</option>  
+                            <option value="Assam">Assam</option>  
+                            <option value="UP">UP</option>  
+                            <option value="Gujarat">Gujarat</option>  
+                            <option value="AP">Andhra Pradesh</option>  
+                        </select>  
+                    </div>  
+                    <div class="form-group col-lg-6">  
+                        <label>Nationality</label>  
+                        <input name="title" id="Nationality" class="form-control" placeholder="Indian" type="text"/>  
+                    </div>  
+                    <div class="form-group col-lg-6">  
+                        <label>Date of Joining</label>  
+                        <input name="Doj" id="Doj" class="form-control datepicker" required="" type="date"/>  
+                    </div>  
+                    <div class="form-group col-lg-8">  
+                        <div style="float: right">  
+                            <input value="Cancel" id="BtnCancel" class="btn btn-primary" type="button"/>  
+                            <input class="btn btn-primary" name="submitButton" id="btnSave" value="Save" type="button"/>  
+                        </div>  
+                    </div>  
+            </div>  
+        </div>  
+    </div>  
+</div> 
+</body>
+</html>
