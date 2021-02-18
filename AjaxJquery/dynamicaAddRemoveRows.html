@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var i = 1;
+        $('#add').click(function () {
+            i++;
+            $('#dynamic_field').append('<tr id="row' + i + '"><td> <input type="text" name="organization[]" id="organization" class="form-control organization"> </td><td><input type="text" name="designation[]" id="designation" class="form-control designation"> </td><td><input type="text" name="duration[]" id="duration" class="form-control duration"  /></td><td> <input type="file" name="files[]" id="files" class="form-control files"> </td><td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove" onclick="remove('+i+')">x</button></td></tr>');
+        });
+        console.log($("#myselect selected:option").text());
+
+//        $(document).on('click', '.btn_remove', function () {
+//            var button_id = $(this).attr("id");
+//            $('#row' + button_id + '').remove();
+//        });
+    });
+    function remove(x)
+    {  
+	$('#row'+x+'').remove();
+    }
+</script>
+
+</head>
+<body>
+<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="text-center">DYNAMIC TABLE ROW ADD & REMOVE USING JQUERY.</h3>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-12">
+								<table class="table table-bordered">
+                                	<thead>
+                                		<tr>
+		                                  <td><label>NAME</label></td>
+		                                  <td><label>EMAIL</label></td>
+		                                  <td><label>PHONE NUMBER</label></td>
+		                                  <td><label>PHOTO</label></td>
+		                                  <td><label>Action</label></td>
+                                		</tr>
+                                	</thead>
+                                	<tbody id="dynamic_field">
+                                 		<tr>
+		                                  <td>
+		                                  	<input type="text" name="name[]" id="name" class="form-control name">
+		                                  </td>
+		                                  <td>
+		                                  	<input type="email" name="email[]" id="email" class="form-control email">
+		                                  </td>
+		                                  <td>
+		                                  <input type="text" name="phone[]" id="phone" class="form-control phone"  />
+		                                  </td>
+		                                  <td>
+		                                 	<input type="file" name="files[]" id="files" class="form-control files">
+		                                  </td>
+		                                 <td>
+		                                 	<button type="button" name="add" id="add" class="btn btn-success ">+</button>
+		                                 </td>
+                                		</tr>
+                                	</tbody>
+                               </table>  
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <select id="myselect">
+    <option value="1">Mr</option>
+    <option value="2">Mrs</option>
+    <option value="3">Ms</option>
+    <option value="4">Dr</option>
+    <option value="5">Prof</option>
+</select>
+</body>
+</html>
