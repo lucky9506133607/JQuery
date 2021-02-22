@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#container1').show();
+        $('#container2').hide();
+        $('#container3').hide();
+        $('#dropdown1').change(function () {
+            alert($('#dropdown1 option:selected').val());
+            var ddval = $('#dropdown1 option:selected').val();
+            if (ddval == "dynamic1") {
+                $('#container1').show();
+                $('#container2').hide();
+                $('#container3').hide();
+            }
+            if (ddval == "dynamic2") {
+                $('#container2').show();
+                $('#container3').hide();
+                $('#container1').hide();
+            }
+            if (ddval == "dynamic3")
+            {
+                $('#container3').show();
+                $('#container1').hide();
+                $('#container2').hide();
+            }
+        });
+
+
+
+        ////################### Table Code Starting ####################////////
+
+        var i = 1;
+        $('#add').click(function () {
+            i++;
+            $('#dynamic_field').append('<tr id="row' + i + '"><td> <input type="text" name="organization[]" id="organization" class="form-control organization"> </td><td><input type="text" name="designation[]" id="designation" class="form-control designation"> </td><td><input type="text" name="duration[]" id="duration" class="form-control duration"  /></td><td> <input type="file" name="files[]" id="files" class="form-control files"> </td><td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove" onclick="remove(' + i + ')">x</button></td></tr>');
+        });
+        console.log($("#myselect selected:option").text());
+
+        //        $(document).on('click', '.btn_remove', function () {
+        //            var button_id = $(this).attr("id");
+        //            $('#row' + button_id + '').remove();
+        //        });
+    });
+    function remove(x) {
+        $('#row' + x + '').remove();
+    }
+
+    //////########################### Table code closing ###############////////
+</script>
+
+</head>
+<body>
+<select id="dropdown1">
+<option value="dynamic1">DYNAMIC TABLE 1</option>
+<option value="dynamic2">DYNAMIC TABLE 2</option>
+<option value="dynamic3">DYNAMIC TABLE 3</option>
+</select>
+<br />
+<br />
+<br />
+<br />
+<br />
+<div class="container" id="container1">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="text-center">FIRST CONTAINER (DYNAMIC TABLE ROW ADD & REMOVE USING JQUERY).</h3>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-12">
+								<table class="table table-bordered">
+                                	<thead>
+                                		<tr>
+		                                  <td><label>NAME</label></td>
+		                                  <td><label>EMAIL</label></td>
+		                                  <td><label>PHONE NUMBER</label></td>
+		                                  <td><label>PHOTO</label></td>
+		                                  <td><label>Action</label></td>
+                                		</tr>
+                                	</thead>
+                                	<tbody id="dynamic_field">
+                                 		<tr>
+		                                  <td>
+		                                  	<input type="text" name="name[]" id="name" class="form-control name">
+		                                  </td>
+		                                  <td>
+		                                  	<input type="email" name="email[]" id="email" class="form-control email">
+		                                  </td>
+		                                  <td>
+		                                  <input type="text" name="phone[]" id="phone" class="form-control phone"  />
+		                                  </td>
+		                                  <td>
+		                                 	<input type="file" name="files[]" id="files" class="form-control files">
+		                                  </td>
+		                                 <td>
+		                                 	<button type="button" name="add" id="add" class="btn btn-success ">+</button>
+		                                 </td>
+                                		</tr>
+                                	</tbody>
+                               </table>  
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="container" id="container2">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="text-center">SECOND CONTAINER (DYNAMIC TABLE ROW ADD & REMOVE USING JQUERY).</h3>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-12">
+								<table class="table table-bordered">
+                                	<thead>
+                                		<tr>
+		                                  <td><label>NAME</label></td>
+		                                  <td><label>EMAIL</label></td>
+		                                  <td><label>PHONE NUMBER</label></td>
+		                                  <td><label>PHOTO</label></td>
+		                                  <td><label>Action</label></td>
+                                		</tr>
+                                	</thead>
+                                	<tbody id="Tbody1">
+                                 		<tr>
+		                                  <td>
+		                                  	<input type="text" name="name[]" id="Text1" class="form-control name">
+		                                  </td>
+		                                  <td>
+		                                  	<input type="email" name="email[]" id="email1" class="form-control email">
+		                                  </td>
+		                                  <td>
+		                                  <input type="text" name="phone[]" id="Text2" class="form-control phone"  />
+		                                  </td>
+		                                  <td>
+		                                 	<input type="file" name="files[]" id="file1" class="form-control files">
+		                                  </td>
+		                                 <td>
+		                                 	<button type="button" name="add" id="Button1" class="btn btn-success ">+</button>
+		                                 </td>
+                                		</tr>
+                                	</tbody>
+                               </table>  
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="container" id="container3">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="text-center">THIRD CONTAINER (DYNAMIC TABLE ROW ADD & REMOVE USING JQUERY).</h3>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-12">
+								<table class="table table-bordered">
+                                	<thead>
+                                		<tr>
+		                                  <td><label>NAME</label></td>
+		                                  <td><label>EMAIL</label></td>
+		                                  <td><label>PHONE NUMBER</label></td>
+		                                  <td><label>PHOTO</label></td>
+		                                  <td><label>Action</label></td>
+                                		</tr>
+                                	</thead>
+                                	<tbody id="Tbody2">
+                                 		<tr>
+		                                  <td>
+		                                  	<input type="text" name="name[]" id="Text3" class="form-control name">
+		                                  </td>
+		                                  <td>
+		                                  	<input type="email" name="email[]" id="email2" class="form-control email">
+		                                  </td>
+		                                  <td>
+		                                  <input type="text" name="phone[]" id="Text4" class="form-control phone"  />
+		                                  </td>
+		                                  <td>
+		                                 	<input type="file" name="files[]" id="file2" class="form-control files">
+		                                  </td>
+		                                 <td>
+		                                 	<button type="button" name="add" id="Button2" class="btn btn-success ">+</button>
+		                                 </td>
+                                		</tr>
+                                	</tbody>
+                               </table>  
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
